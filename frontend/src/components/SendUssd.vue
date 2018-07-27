@@ -1,0 +1,119 @@
+<template>
+  <div>
+    <form novalidate class="md-layout" @submit.prevent="validateItem">
+      <md-card class="md-layout-item md-size-100 md-small-size-100">
+        <md-card-header>
+          <div class="md-title">Отправить USDD</div>
+        </md-card-header>
+
+        <md-card-content>
+          <div class="md-layout md-gutter">
+            <div class="md-layout-item md-small-size-10name0">
+              <md-field :class="getValidationClass('ussd')">
+                <label for="ussd">USDD</label>
+                <md-input name="ussd" id="ussd" autocomplete="given-ussd" v-model="form.ussd" :disabled="loading" />
+                <span class="md-error" v-if="!$v.form.ussd.required">USDD обязателен для заполнения</span>
+              </md-field>
+              <md-field :class="getValidationClass('channel_id')">
+                <label for="channel_id">ID канала</label>
+                <md-select name="channel_id" id="channel_id" v-model="form.channel_id" md-dense :disabled="loading">
+                  <md-option v-for="channel in channels" v-bind:key="channel.id" v-bind:value="channel.id">{{channel.name}}</md-option>
+                </md-select>
+                <span class="md-error" v-if="!$v.form.channel_id.required">ID канала обязателен для заполнения</span>
+              </md-field>
+            </div>
+          </div>
+        </md-card-content>
+
+        <md-progress-bar md-mode="indeterminate" v-if="loading" />
+
+        <md-card-actions>
+          <md-button type="submit" class="md-primary" :disabled="loading">Отправить USDD</md-button>
+        </md-card-actions>
+      </md-card>
+    </form>
+  </div>
+</template>
+
+<script>
+import { validationMixin } from 'vuelidate'
+import {
+  required
+} from 'vuelidate/lib/validators'
+export default {
+  name: 'SendUssd',
+  mixins: [validationMixin],
+  data: () => ({
+    form: {
+      ussd: null,
+      channel_id: null
+    },
+    channels: [],
+    loading: false
+  }),
+  validations: {
+    form: {
+      ussd: {
+        required
+      },
+      channel_id: {
+        required
+      }
+    }
+  },
+  created: function () {
+    this.getChannels()
+  },
+  methods: {
+    getValidationClass: function (fieldName) {
+      const field = this.$v.form[fieldName]
+
+      if (field) {
+        return {
+          'md-invalid': field.$invalid && field.$dirty
+        }
+      }
+    },
+    getChannels: function () {
+      let self = this
+      self.$root.axios.get('channels/all')
+        .then(function (response) {
+          self.channels = response.data
+        })
+        .catch(function (error) {
+          console.log(error)
+        })
+    },
+    saveItem: function () {
+      let self = this
+      self.loading = true
+
+      self.$root.axios.post('ussd/add', self.form)
+        .then(function (response) {
+          self.items = response.data
+          self.loading = false
+          self.$router.push({name: 'Ussd'})
+        })
+        .catch(function (error) {
+          console.log(error)
+        })
+    },
+    validateItem: function () {
+      this.$v.$touch()
+
+      if (!this.$v.$invalid) {
+        this.saveItem()
+      }
+    }
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+  .md-progress-bar {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+  }
+</style>

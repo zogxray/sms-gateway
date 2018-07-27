@@ -11,3 +11,7 @@ class Channel(Model):
         from models.sms import Sms
         return Sms.order_by('created_at', 'DESC')
 
+    @has_many('channal_id', 'id')
+    def sms(self):
+        from models.ussd import Ussd
+        return Ussd.order_by('created_at', 'DESC')

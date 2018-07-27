@@ -4,7 +4,7 @@
     <md-table v-model="items.data" md-sort="name" md-sort-order="asc" md-card>
       <md-table-toolbar>
         <div class="md-toolbar-section-start">
-          <h1 class="md-title">Channels</h1>
+          <h1 class="md-title">Входящие Sms</h1>
         </div>
 
         <md-field md-clearable class="md-toolbar-section-end">
@@ -14,28 +14,26 @@
 
       <md-table-empty-state
         md-label="No sms found"
-        :md-description="`No channels found. Try a different search term.`">
+        :md-description="`No sms found. Try a different search term.`">
       </md-table-empty-state>
 
       <md-table-row slot="md-table-row" slot-scope="{ item }">
         <md-table-cell md-label="ID" md-sort-by="id" md-numeric>{{ item.id }}</md-table-cell>
-        <md-table-cell md-label="Название" md-sort-by="name">{{ item.name }}</md-table-cell>
         <md-table-cell md-label="Телефон" md-sort-by="phone">{{ item.phone }}</md-table-cell>
-        <md-table-cell md-label="Sim id канала" md-sort-by="sim_id">{{ item.sim_id }}</md-table-cell>
-        <md-table-cell md-label="Sim ключ канала" md-sort-by="sim_pass">{{ item.sim_pass }}</md-table-cell>
-        <md-table-cell md-label="Баланс" md-sort-by="balance">{{ item.balance }}</md-table-cell>
-        <md-table-cell md-label="Активность" md-sort-by="last_live_at" md-tooltip="Время последней активности канала">{{ item.last_live_at | moment('timezone', 'Europe/Kiev','D-MM-YYYY HH:mm:ss') }}</md-table-cell>
-        <md-table-cell md-label="Дата создания" md-sort-by="created_at">{{ item.created_at | moment('timezone', 'Europe/Kiev', 'D-MM-YYYY HH:mm:ss') }}</md-table-cell>
+        <md-table-cell md-label="Текст" md-sort-by="text">{{ item.text }}</md-table-cell>
+        <md-table-cell md-label="Sim карта" md-sort-by="channel_id">{{ item.channel.name }}</md-table-cell>
+        <md-table-cell md-label="Дата получения" md-sort-by="created_at">{{ item.created_at | moment('timezone', 'Europe/Kiev', 'D-MM-YYYY HH:mm:ss') }}</md-table-cell>
       </md-table-row>
     </md-table>
     <pagination class="col bg-faded py-3" :data="items" :limit="items.per_page"
                 v-on:pagination-change-page="getPage"></pagination>
+    <audio id="tick" src="/static/audio/tick.mp3"></audio>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'Channels',
+  name: 'IncomingSms',
   data: () => ({
     filter: {
       text: ''
@@ -43,11 +41,10 @@ export default {
     items: {
       data: []
     },
-    loading: false,
-    interval: null
+    loading: false
   }),
   created: function () {
-    let filter = JSON.parse(localStorage.getItem('channels-filter'))
+    let filter = JSON.parse(localStorage.getItem('incoming-sms-filter'))
 
     if (filter !== null) {
       this.filter = filter
@@ -58,7 +55,7 @@ export default {
   watch: {
     filter: {
       handler: function (val, oldVal) {
-        localStorage.setItem('channels-filter', JSON.stringify(val))
+        localStorage.setItem('incoming-sms-filter', JSON.stringify(val))
         this.getFiltered(this.$route.params.page)
       },
       deep: true
@@ -71,7 +68,7 @@ export default {
       } else {
         self.page = page
       }
-      self.$router.push({name: 'ChannelsPage', params: {page: self.page}})
+      this.$router.push({name: 'IncomingSms', params: {page: self.page}})
     },
     getFiltered: function (page) {
       let self = this
@@ -84,10 +81,30 @@ export default {
 
       self.loading = true
 
-      self.$root.axios.post('channels/' + self.page, self.filter)
+      self.$root.axios.post('incoming-sms/' + self.page, self.filter)
         .then(function (response) {
           self.items = response.data
           self.loading = false
+          if (self.page === 1) {
+            if (self.interval !== null) {
+              clearInterval(self.interval)
+            }
+            self.interval = setInterval(function () {
+              self.$root.axios.post('incoming-sms/latest', {date: self.items.data[0].created_at})
+                .then(function (response) {
+                  if (response.data !== null) {
+                    self.items.data.unshift(response.data)
+                    self.items.data.pop()
+
+                    let audio = document.getElementById('tick')
+                    audio.play()
+                  }
+                })
+                .catch(function (error) {
+                  console.log(error)
+                })
+            }, 2500)
+          }
         })
         .catch(function (error) {
           console.log(error)

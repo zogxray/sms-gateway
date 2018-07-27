@@ -7,9 +7,29 @@
         </md-toolbar>
 
         <md-list>
-          <router-link :to="{ name: 'Sms'}" tag="md-list-item">
+          <router-link :to="{ name: 'IncomingSms'}" tag="md-list-item">
             <md-icon>move_to_inbox</md-icon>
             <span class="md-list-item-text">Входящие Sms</span>
+          </router-link>
+
+          <router-link :to="{ name: 'OutgoingSms'}" tag="md-list-item">
+            <md-icon>move_to_inbox</md-icon>
+            <span class="md-list-item-text">Исходящие Sms</span>
+          </router-link>
+
+          <router-link :to="{ name: 'SendSms'}" tag="md-list-item">
+            <md-icon>send</md-icon>
+            <span class="md-list-item-text">Отправить Sms</span>
+          </router-link>
+
+          <router-link :to="{ name: 'Ussd'}" tag="md-list-item">
+            <md-icon>move_to_inbox</md-icon>
+            <span class="md-list-item-text">USSD</span>
+          </router-link>
+
+          <router-link :to="{ name: 'SendUssd'}" tag="md-list-item">
+            <md-icon>send</md-icon>
+            <span class="md-list-item-text">Отправить USSD</span>
           </router-link>
 
           <router-link :to="{ name: 'Channels'}" tag="md-list-item">

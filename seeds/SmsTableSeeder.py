@@ -10,7 +10,8 @@ def sms_factory(faker):
     return {
         'phone': faker.phone_number(),
         'text': faker.text(),
-        'channel_id': 1
+        'channel_id': 1,
+        'direction': False
 
     }
 

@@ -22,7 +22,8 @@
         <md-table-cell md-label="Телефон" md-sort-by="phone">{{ item.phone }}</md-table-cell>
         <md-table-cell md-label="Текст" md-sort-by="text">{{ item.text }}</md-table-cell>
         <md-table-cell md-label="Sim карта" md-sort-by="channel_id">{{ item.channel.name }}</md-table-cell>
-        <md-table-cell md-label="Дата получения" md-sort-by="created_at">{{ item.created_at | moment('timezone', 'Europe/Kiev', 'D-MM-YYYY HH:mm:ss') }}</md-table-cell>
+        <md-table-cell md-label="Отправлен" md-sort-by="send_at">{{ item.send_at | moment('timezone', 'Europe/Kiev', 'D-MM-YYYY HH:mm:ss') }}</md-table-cell>
+        <md-table-cell md-label="Дата создания" md-sort-by="created_at">{{ item.created_at | moment('timezone', 'Europe/Kiev', 'D-MM-YYYY HH:mm:ss') }}</md-table-cell>
       </md-table-row>
     </md-table>
     <pagination class="col bg-faded py-3" :data="items" :limit="items.per_page"
@@ -33,7 +34,7 @@
 
 <script>
 export default {
-  name: 'Sms',
+  name: 'IncomingSms',
   data: () => ({
     filter: {
       text: ''
@@ -44,7 +45,7 @@ export default {
     loading: false
   }),
   created: function () {
-    let filter = JSON.parse(localStorage.getItem('sms-filter'))
+    let filter = JSON.parse(localStorage.getItem('outgoing-sms-filter'))
 
     if (filter !== null) {
       this.filter = filter
@@ -55,7 +56,7 @@ export default {
   watch: {
     filter: {
       handler: function (val, oldVal) {
-        localStorage.setItem('sms-filter', JSON.stringify(val))
+        localStorage.setItem('outgoing-sms-filter', JSON.stringify(val))
         this.getFiltered(this.$route.params.page)
       },
       deep: true
@@ -68,7 +69,7 @@ export default {
       } else {
         self.page = page
       }
-      this.$router.push({name: 'SmsPage', params: {page: self.page}})
+      this.$router.push({name: 'OutgoingSms', params: {page: self.page}})
     },
     getFiltered: function (page) {
       let self = this
@@ -81,17 +82,16 @@ export default {
 
       self.loading = true
 
-      self.$root.axios.post('sms/' + self.page, self.filter)
+      self.$root.axios.post('outgoing-sms/' + self.page, self.filter)
         .then(function (response) {
           self.items = response.data
           self.loading = false
-          console.log(self.page)
           if (self.page === 1) {
             if (self.interval !== null) {
               clearInterval(self.interval)
             }
             self.interval = setInterval(function () {
-              self.$root.axios.post('sms/latest', {date: self.items.data[0].created_at})
+              self.$root.axios.post('outgoing-sms/latest', {date: self.items.data[0].created_at})
                 .then(function (response) {
                   if (response.data !== null) {
                     self.items.data.unshift(response.data)

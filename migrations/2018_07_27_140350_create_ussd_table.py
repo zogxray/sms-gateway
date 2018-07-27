@@ -1,19 +1,18 @@
 from orator.migrations import Migration
 
 
-class CreateSmsTable(Migration):
+class CreateUssdTable(Migration):
 
     def up(self):
         """
         Run the migrations.
         """
-        with self.schema.create('sms') as table:
+        with self.schema.create('ussd') as table:
             table.big_increments('id')
-            table.string('phone')
-            table.string('text')
-            table.integer('sim_msg_count').default(0)
-            table.boolean('direction').default(False)
+            table.string('ussd')
+            table.text('answer').nullable()
             table.timestamp('send_at').nullable()
+            table.timestamp('received_at').nullable()
 
             table.integer('channel_id').unsigned()
             table.foreign('channel_id').references('id').on('channels').on_delete('cascade')
@@ -24,4 +23,4 @@ class CreateSmsTable(Migration):
         """
         Revert the migrations.
         """
-        self.schema.drop('sms')
+        self.schema.drop('ussd')

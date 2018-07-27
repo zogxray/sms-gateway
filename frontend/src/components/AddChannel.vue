@@ -1,6 +1,6 @@
 <template>
   <div>
-    <form novalidate class="md-layout" @submit.prevent="validateUser">
+    <form novalidate class="md-layout" @submit.prevent="validateItem">
       <md-card class="md-layout-item md-size-100 md-small-size-100">
         <md-card-header>
           <div class="md-title">SIM-канал</div>
@@ -19,12 +19,12 @@
                 <span class="md-error" v-if="!$v.form.name.required">Название обязательно для заполнения</span>
               </md-field>
               <md-field :class="getValidationClass('sim_id')">
-                <label for="name">SIM-канал ID</label>
+                <label for="sim-id">SIM-канал ID</label>
                 <md-input name="sim-id" id="sim-id" autocomplete="given-sim-id" v-model="form.sim_id" :disabled="loading" />
                 <span class="md-error" v-if="!$v.form.sim_id.required">ID обязателен для заполнения</span>
               </md-field>
               <md-field :class="getValidationClass('sim_pass')">
-                <label for="name">SIM-канал ключ</label>
+                <label for="sim-pass">SIM-канал ключ</label>
                 <md-input name="sim-pass" id="sim-pass" autocomplete="given-sim-pass" v-model="form.sim_pass" :disabled="loading" />
                 <span class="md-error" v-if="!$v.form.sim_pass.required">Ключ обязателен для заполнения</span>
               </md-field>
@@ -62,8 +62,7 @@ export default {
       sim_pass: null,
       phone: null
     },
-    loading: false,
-    lastUser: null
+    loading: false
   }),
   validations: {
     form: {
@@ -91,7 +90,7 @@ export default {
         }
       }
     },
-    saveUser: function () {
+    saveItem: function () {
       let self = this
       self.loading = true
 
@@ -105,11 +104,11 @@ export default {
           console.log(error)
         })
     },
-    validateUser: function () {
+    validateItem: function () {
       this.$v.$touch()
 
       if (!this.$v.$invalid) {
-        this.saveUser()
+        this.saveItem()
       }
     }
   }
