@@ -28,6 +28,15 @@ app.config.from_object(__name__)
 # Initializing Orator
 db = Orator(app)
 
+@app.errorhandler(404)
+def page_not_found(e):
+    # note that we set the 404 status explicitly
+    return jsonify({404: 'Page not found'})
+@app.errorhandler(500)
+def server_error(e):
+    # note that we set the 404 status explicitly
+    return jsonify({500: 'Oops. Something went wrong'})
+
 @app.route('/channels/add', methods=['POST'])
 def channels_add():
     rdata = request.get_json()
@@ -216,5 +225,13 @@ def channels_all():
 
     return jsonify(items)
 
+@app.route('/trans.js', methods=['GET'])
+def trans():
+    return jsonify({'en': {
+        'title': 'title'
+    }})
+
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000, threaded=True)
+    app.register_error_handler(404, page_not_found)
+    app.register_error_handler(500, server_error)
+    app.run(host="0.0.0.0", port=5002, threaded=True)

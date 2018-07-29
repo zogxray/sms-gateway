@@ -1,7 +1,14 @@
 <template>
   <div>
     <md-progress-bar md-mode="indeterminate" v-if="loading" />
-    <md-table v-model="items.data" md-sort="name" md-sort-order="asc" md-card>
+    <md-empty-state v-if="error"
+      class="md-accent"
+      md-rounded
+      md-icon="error"
+      md-label="Whoops!"
+      md-description="Something went wrong.">
+    </md-empty-state>
+    <md-table v-if="!error" v-model="items.data" md-sort="name" md-sort-order="asc" md-card>
       <md-table-toolbar>
         <div class="md-toolbar-section-start">
           <h1 class="md-title">Входящие Sms</h1>
@@ -41,7 +48,9 @@ export default {
     items: {
       data: []
     },
-    loading: false
+    loading: false,
+    error: null,
+    interval: null
   }),
   created: function () {
     let filter = JSON.parse(localStorage.getItem('incoming-sms-filter'))
@@ -60,6 +69,9 @@ export default {
       },
       deep: true
     }
+  },
+  beforeDestroy: function () {
+    clearInterval(this.interval)
   },
   methods: {
     getPage: function (page) {
@@ -101,13 +113,15 @@ export default {
                   }
                 })
                 .catch(function (error) {
-                  console.log(error)
+                  self.error = error
+                  self.loading = false
                 })
-            }, 2500)
+            }, 5000)
           }
         })
         .catch(function (error) {
-          console.log(error)
+          self.error = error
+          self.loading = false
         })
     }
   }

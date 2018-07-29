@@ -1,7 +1,14 @@
 <template>
   <div>
     <md-progress-bar md-mode="indeterminate" v-if="loading" />
-    <md-table v-model="items.data" md-sort="name" md-sort-order="asc" md-card>
+    <md-empty-state v-if="error"
+      class="md-accent"
+      md-rounded
+      md-icon="error"
+      md-label="Whoops!"
+      md-description="Something went wrong.">
+    </md-empty-state>
+    <md-table  v-if="!error" v-model="items.data" md-sort="name" md-sort-order="asc" md-card>
       <md-table-toolbar>
         <div class="md-toolbar-section-start">
           <h1 class="md-title">Channels</h1>
@@ -44,7 +51,8 @@ export default {
       data: []
     },
     loading: false,
-    interval: null
+    interval: null,
+    error: null
   }),
   created: function () {
     let filter = JSON.parse(localStorage.getItem('channels-filter'))
@@ -90,7 +98,8 @@ export default {
           self.loading = false
         })
         .catch(function (error) {
-          console.log(error)
+          self.error = error
+          self.loading = false
         })
     }
   }

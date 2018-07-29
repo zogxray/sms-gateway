@@ -1,11 +1,18 @@
 <template>
   <div>
-    <form novalidate class="md-layout" @submit.prevent="validateItem">
+    <md-progress-bar md-mode="indeterminate" v-if="loading" />
+    <md-empty-state v-if="error"
+      class="md-accent"
+      md-rounded
+      md-icon="error"
+      md-label="Whoops!"
+      md-description="Something went wrong.">
+    </md-empty-state>
+    <form v-if="!error" novalidate class="md-layout" @submit.prevent="validateItem">
       <md-card class="md-layout-item md-size-100 md-small-size-100">
         <md-card-header>
           <div class="md-title">Отправить USDD</div>
         </md-card-header>
-
         <md-card-content>
           <div class="md-layout md-gutter">
             <div class="md-layout-item md-small-size-10name0">
@@ -15,8 +22,8 @@
                 <span class="md-error" v-if="!$v.form.ussd.required">USDD обязателен для заполнения</span>
               </md-field>
               <md-field :class="getValidationClass('channel_id')">
-                <label for="channel_id">ID канала</label>
-                <md-select name="channel_id" id="channel_id" v-model="form.channel_id" md-dense :disabled="loading">
+                <label for="channel-id">ID канала</label>
+                <md-select name="channel-id" id="channel-id" v-model="form.channel_id" md-dense :disabled="loading">
                   <md-option v-for="channel in channels" v-bind:key="channel.id" v-bind:value="channel.id">{{channel.name}}</md-option>
                 </md-select>
                 <span class="md-error" v-if="!$v.form.channel_id.required">ID канала обязателен для заполнения</span>
@@ -24,9 +31,6 @@
             </div>
           </div>
         </md-card-content>
-
-        <md-progress-bar md-mode="indeterminate" v-if="loading" />
-
         <md-card-actions>
           <md-button type="submit" class="md-primary" :disabled="loading">Отправить USDD</md-button>
         </md-card-actions>
@@ -49,7 +53,8 @@ export default {
       channel_id: null
     },
     channels: [],
-    loading: false
+    loading: false,
+    error: null
   }),
   validations: {
     form: {
@@ -81,7 +86,8 @@ export default {
           self.channels = response.data
         })
         .catch(function (error) {
-          console.log(error)
+          self.error = error
+          self.loading = false
         })
     },
     saveItem: function () {
@@ -95,7 +101,8 @@ export default {
           self.$router.push({name: 'Ussd'})
         })
         .catch(function (error) {
-          console.log(error)
+          self.error = error
+          self.loading = false
         })
     },
     validateItem: function () {

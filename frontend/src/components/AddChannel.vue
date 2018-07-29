@@ -1,13 +1,21 @@
 <template>
   <div>
-    <form novalidate class="md-layout" @submit.prevent="validateItem">
+    <md-progress-bar md-mode="indeterminate" v-if="loading" />
+    <md-empty-state v-if="error"
+      class="md-accent"
+      md-rounded
+      md-icon="error"
+      md-label="Whoops!"
+      md-description="Something went wrong.">
+    </md-empty-state>
+    <form v-if="!error" novalidate class="md-layout" @submit.prevent="validateItem">
       <md-card class="md-layout-item md-size-100 md-small-size-100">
         <md-card-header>
           <div class="md-title">SIM-канал</div>
         </md-card-header>
 
         <md-toolbar class="md-accent">
-          <p>При добавлении канала важно понимать, что передающий канал должен быть настроен на GoIP устройстве. Поле активность в списке каналов покажет дату последнего запроса с утройства</p>
+          <p>Передающий канал должен быть настроен на GoIP устройстве. Поле активность в списке каналов покажет дату последнего запроса с утройства</p>
         </md-toolbar>
 
         <md-card-content>
@@ -36,9 +44,6 @@
             </div>
           </div>
         </md-card-content>
-
-        <md-progress-bar md-mode="indeterminate" v-if="loading" />
-
         <md-card-actions>
           <md-button type="submit" class="md-primary" :disabled="loading">Добавить канал</md-button>
         </md-card-actions>
@@ -62,7 +67,8 @@ export default {
       sim_pass: null,
       phone: null
     },
-    loading: false
+    loading: false,
+    error: null
   }),
   validations: {
     form: {
@@ -101,7 +107,8 @@ export default {
           self.$router.push({name: 'Channels'})
         })
         .catch(function (error) {
-          console.log(error)
+          self.error = error
+          self.loading = false
         })
     },
     validateItem: function () {
