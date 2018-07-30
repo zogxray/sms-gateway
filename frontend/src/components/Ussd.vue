@@ -1,17 +1,22 @@
 <template>
   <div>
     <md-progress-bar md-mode="indeterminate" v-if="loading" />
-    <md-table v-model="items.data" md-sort="name" md-sort-order="asc" md-card>
+    <md-empty-state v-if="error"
+      class="md-accent"
+      md-rounded
+      md-icon="error"
+      md-label="Whoops!"
+      md-description="Something went wrong.">
+    </md-empty-state>
+    <md-table v-if="!error" v-model="items.data" md-sort="name" md-sort-order="asc" md-card>
       <md-table-toolbar>
         <div class="md-toolbar-section-start">
           <h1 class="md-title">USSD</h1>
         </div>
-
         <md-field md-clearable class="md-toolbar-section-end">
           <md-input placeholder="Поиск..." v-model="filter.text"/>
         </md-field>
       </md-table-toolbar>
-
       <md-table-empty-state
         md-label="No USSD found"
         :md-description="`No USSD found. Try a different search term.`">
@@ -42,7 +47,8 @@ export default {
     items: {
       data: []
     },
-    loading: false
+    loading: false,
+    error: null
   }),
   created: function () {
     let filter = JSON.parse(localStorage.getItem('ussd-filter'))
@@ -88,7 +94,8 @@ export default {
           self.loading = false
         })
         .catch(function (error) {
-          console.log(error)
+          self.error = error
+          self.loading = false
         })
     }
   }

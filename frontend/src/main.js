@@ -16,6 +16,7 @@ Vue.use(VueMaterial)
 Vue.use(vueMoment, {
   moment
 })
+
 Vue.component('pagination', require('laravel-vue-pagination'))
 
 /* eslint-disable no-new */
