@@ -14,6 +14,7 @@ print("Listening on " + server_address + ":" + str(server_port))
 while True:
     payload, client_address = sock.recvfrom(1024)
     payload = payload.decode('utf-8')
+    print(payload)
     rows = payload.split(";")
     request_data = {}
     for row in rows:
@@ -58,3 +59,11 @@ while True:
             message = message.encode('utf-8')
 
             sock.sendto(message, client_address)
+
+    count_sms = Sms.where('direction', True).where('send_at', None).count()
+
+    # if count_sms > 0:
+    #     print('SMS queue count: ' + str(count_sms))
+    #
+    #
+
