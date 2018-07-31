@@ -1,18 +1,38 @@
 import socket
 from models.ussd import Ussd
+from models.channel import Channel
 from app import db
+import random
+import time
+import datetime
+import re
+from decimal import Decimal
 
-server_address = '127.0.0.1'
-server_port = 44441
-server = (server_address, server_port)
-sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-sock.connect(server)
+while True:
+    ussds = Ussd.with_('channel').where('received_at', None).get()
 
-count_ussd = Ussd.where('send_at', None).count()
+    for ussd in ussds:
+        channel_server = (ussd.channel.address, ussd.channel.port)
+        ussd.update(send_at=datetime.datetime.now())
 
-message = 'MSG 35435 343545 345345\n'
-message = message.encode('utf-8')
-sock.sendto(message, server)
-payload = sock.recv(1024)
-payload = payload.decode('utf-8')
-print(payload)
+        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.SOL_UDP)
+        sock.connect(channel_server)
+
+        message = 'USSD ' + str(ussd.id) + ' ' + ussd.channel.sim_pass + ' ' + ussd.ussd
+        print(message)
+        message = message.encode('utf-8')
+        sock.sendto(message, channel_server)
+
+        payload, client_address = sock.recvfrom(1024)
+        payload = payload.decode('utf-8')
+        print(payload)
+        ussd.update(answer=payload, received_at=datetime.datetime.now())
+
+        if ussd.ussd == ussd.channel.balance_ussd:
+            balance = re.findall('\d+\.\d+', payload)[0]
+            if balance:
+                print(balance)
+                ussd.channel.update(balance=Decimal(balance))
+
+    print('Sleep ' + str(datetime.datetime.now()))
+    time.sleep(10)

@@ -13,6 +13,7 @@ class ChannelTableSeeder(Seeder):
             'phone': '+380956307619',
             'sim_id': 'thatispass',
             'sim_pass': 'thatispass',
-            'balance': 100.30
+            'balance': 100.30,
+            'balance_ussd': '*101#'
         })
 

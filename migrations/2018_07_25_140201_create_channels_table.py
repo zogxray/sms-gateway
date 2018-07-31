@@ -15,6 +15,9 @@ class CreateChannelsTable(Migration):
             table.string('phone').unique()
             table.decimal('balance', 5, 2).default(0.00)
             table.timestamp('last_live_at').nullable()
+            table.string('address').nullable()
+            table.integer('port').nullable()
+            table.string('balance_ussd').nullable()
             table.timestamps()
 
     def down(self):

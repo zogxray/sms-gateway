@@ -3,8 +3,10 @@ from models.sms import Sms
 from models.channel import Channel
 from app import db
 import datetime
+import time
+import random
 
-sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.SOL_UDP)
 server_address = '0.0.0.0'
 server_port = 44441
 server = (server_address, server_port)
@@ -27,7 +29,7 @@ while True:
             message = 'RECEIVE ' + request_data['RECEIVE'] + 'ERROR Channel not found at SMA - hub'
             message = message.encode('utf-8')
 
-        channel.update(last_live_at=datetime.datetime.now())
+        channel.update(address=client_address[0], port=client_address[1], last_live_at=datetime.datetime.now())
 
         message = 'Keep-Alive request ' + request_data['req'] + '\n'
         print('Keep-Alive request '.join(request_data['req']))
@@ -60,10 +62,5 @@ while True:
 
             sock.sendto(message, client_address)
 
-    count_sms = Sms.where('direction', True).where('send_at', None).count()
-
-    # if count_sms > 0:
-    #     print('SMS queue count: ' + str(count_sms))
-    #
-    #
+    time.sleep(10)
 
