@@ -27,9 +27,9 @@
         <md-table-cell md-label="USSD запрос" md-sort-by="ussd">{{ item.ussd }}</md-table-cell>
         <md-table-cell md-label="USSD ответ" md-sort-by="answer">{{ item.answer }}</md-table-cell>
         <md-table-cell md-label="Sim карта" md-sort-by="channel_id">{{ item.channel.name }}</md-table-cell>
-        <md-table-cell md-label="Запрос отправлен" md-sort-by="send_at">{{ item.send_at | moment('timezone', 'Europe/Kiev', 'D-MM-YYYY HH:mm:ss') }}</md-table-cell>
-        <md-table-cell md-label="Ответ получен" md-sort-by="received_at">{{ item.received_at | moment('timezone', 'Europe/Kiev', 'D-MM-YYYY HH:mm:ss') }}</md-table-cell>
-        <md-table-cell md-label="Дата создания" md-sort-by="created_at">{{ item.created_at | moment('timezone', 'Europe/Kiev', 'D-MM-YYYY HH:mm:ss') }}</md-table-cell>
+        <md-table-cell md-label="Запрос отправлен" md-sort-by="send_at">{{ item.send_at | moment('timezone', 'Europe/Kiev', 'DD-MM-YYYY HH:mm:ss') }}</md-table-cell>
+        <md-table-cell md-label="Ответ получен" md-sort-by="received_at">{{ item.received_at | moment('timezone', 'Europe/Kiev', 'DD-MM-YYYY HH:mm:ss') }}</md-table-cell>
+        <md-table-cell md-label="Дата создания" md-sort-by="created_at">{{ item.created_at | moment('timezone', 'Europe/Kiev', 'DD-MM-YYYY HH:mm:ss') }}</md-table-cell>
       </md-table-row>
     </md-table>
     <pagination class="col bg-faded py-3" :data="items" :limit="items.per_page"

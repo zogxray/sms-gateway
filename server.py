@@ -14,13 +14,13 @@ sock.bind(server)
 print("Listening on " + server_address + ":" + str(server_port))
 
 while True:
-    payload, client_address = sock.recvfrom(1024)
+    payload, client_address = sock.recvfrom(2048)
     payload = payload.decode('utf-8')
     print(payload)
     rows = payload.split(";")
     request_data = {}
     for row in rows:
-        rowd = row.split(":")
+        rowd = row.split(":", 1)
         request_data[rowd[0]] = rowd[-1]
 
     if 'req' in request_data:
@@ -61,6 +61,3 @@ while True:
             message = message.encode('utf-8')
 
             sock.sendto(message, client_address)
-
-    time.sleep(10)
-
