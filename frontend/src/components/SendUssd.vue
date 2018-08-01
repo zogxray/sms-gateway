@@ -11,7 +11,7 @@
     <form v-if="!error" novalidate class="md-layout" @submit.prevent="validateItem">
       <md-card class="md-layout-item md-size-100 md-small-size-100">
         <md-card-header>
-          <div class="md-title">Отправить USDD</div>
+          <div class="md-title">{{ 'sendUssd' | trans }}</div>
         </md-card-header>
         <md-card-content>
           <div class="md-layout md-gutter">
@@ -32,7 +32,7 @@
           </div>
         </md-card-content>
         <md-card-actions>
-          <md-button type="submit" class="md-primary" :disabled="loading">Отправить USDD</md-button>
+          <md-button type="submit" class="md-primary" :disabled="loading">{{ 'sendUssd' | trans }}</md-button>
         </md-card-actions>
       </md-card>
     </form>

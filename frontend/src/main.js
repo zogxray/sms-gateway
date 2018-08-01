@@ -19,6 +19,20 @@ Vue.use(vueMoment, {
 
 Vue.component('pagination', require('laravel-vue-pagination'))
 
+export const trans = new Vue({
+  data: {
+    translation: {}
+  }
+})
+
+Vue.filter('trans', function (value) {
+  if (!value && trans.translation[value]) {
+    return ''
+  }
+
+  return trans.translation[value]
+})
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

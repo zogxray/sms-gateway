@@ -253,11 +253,42 @@ def channels_all():
 
     return jsonify(items)
 
-@app.route('/trans.js', methods=['GET'])
-def trans():
-    return jsonify({'en': {
-        'title': 'title'
-    }})
+@app.route('/lang.js', methods=['GET'])
+def lang():
+    return jsonify(
+        {
+            'en': {
+                'title': 'SMS-gateway',
+                'incomingSms': 'Incoming Sms',
+                'outgoingSms': 'Outgoing Sms',
+                'sendSms': 'Send Sms',
+                'ussd': 'USSD',
+                'sendUssd': 'Send USSD',
+                'simCarts': 'SIM carts',
+                'simCart': 'SIM cart',
+                'addSim': 'Create SIM',
+                'updateSim': 'Update SIM',
+                'phone': 'Phone',
+                'text': 'Text',
+                'receivedAt': 'Received At',
+            },
+            'ru': {
+                'title': 'SMS-шлюз',
+                'incomingSms': 'Входящие Sms',
+                'outgoingSms': 'Исходящие Sms',
+                'sendSms': 'Отправить Sms',
+                'ussd': 'USSD',
+                'sendUssd': 'Отправить USSD',
+                'simCarts': 'SIM карты',
+                'simCart': 'SIM карта',
+                'addSim': 'Добавить SIM',
+                'updateSim': 'Изменить SIM',
+                'phone': 'Телефон',
+                'text': 'Текст',
+                'receivedAt': 'Дата получения',
+            }
+        }
+    )
 
 if __name__ == "__main__":
     app.register_error_handler(404, page_not_found)

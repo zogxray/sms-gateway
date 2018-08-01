@@ -11,7 +11,7 @@
     <md-table  v-if="!error" v-model="items.data" md-sort="name" md-sort-order="asc" md-card>
       <md-table-toolbar>
         <div class="md-toolbar-section-start">
-          <h1 class="md-title">Channels</h1>
+          <h1 class="md-title">{{ 'simCarts' | trans }}</h1>
         </div>
 
         <md-field md-clearable class="md-toolbar-section-end">
@@ -27,7 +27,7 @@
       <md-table-row slot="md-table-row" slot-scope="{ item }">
         <md-table-cell md-label="ID" md-sort-by="id" md-numeric>{{ item.id }}</md-table-cell>
         <md-table-cell md-label="Название" md-sort-by="name">{{ item.name }}</md-table-cell>
-        <md-table-cell md-label="Телефон" md-sort-by="phone">{{ item.phone }}</md-table-cell>
+        <md-table-cell :md-label="'phone' | trans" md-sort-by="phone">{{ item.phone }}</md-table-cell>
         <md-table-cell md-label="Sim id канала" md-sort-by="sim_id">{{ item.sim_id }}</md-table-cell>
         <md-table-cell md-label="Sim ключ канала" md-sort-by="sim_pass">{{ item.sim_pass }}</md-table-cell>
         <md-table-cell md-label="Баланс" md-sort-by="balance">{{ item.balance }}</md-table-cell>

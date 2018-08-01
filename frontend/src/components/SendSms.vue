@@ -10,18 +10,18 @@
     <form v-if="!error" novalidate class="md-layout" @submit.prevent="validateItem">
       <md-card class="md-layout-item md-size-100 md-small-size-100">
         <md-card-header>
-          <div class="md-title">Отправить SMS</div>
+          <div class="md-title">{{ 'sendSms' | trans }}</div>
         </md-card-header>
         <md-card-content>
           <div class="md-layout md-gutter">
             <div class="md-layout-item md-small-size-10name0">
               <md-field :class="getValidationClass('phone')">
-                <label for="phone">Телефон</label>
+                <label for="phone">{{ 'phone' | trans }}</label>
                 <md-input name="phone" id="phone" autocomplete="given-phone" v-model="form.phone" :disabled="loading" />
                 <span class="md-error" v-if="!$v.form.phone.required">Телефон обязателен для заполнения</span>
               </md-field>
               <md-field :class="getValidationClass('text')">
-                <label for="text">Текст</label>
+                <label for="text">{{'text' | trans}}</label>
                 <md-input name="text" id="text" autocomplete="given-text" v-model="form.text" :disabled="loading" />
                 <span class="md-error" v-if="!$v.form.text.required">Текст обязателен для заполнения</span>
               </md-field>
@@ -39,7 +39,7 @@
         <md-progress-bar md-mode="indeterminate" v-if="loading" />
 
         <md-card-actions>
-          <md-button type="submit" class="md-primary" :disabled="loading">Отправить SMS</md-button>
+          <md-button type="submit" class="md-primary" :disabled="loading">{{ 'sendSms' | trans }}</md-button>
         </md-card-actions>
       </md-card>
     </form>

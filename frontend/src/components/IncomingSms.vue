@@ -11,7 +11,7 @@
     <md-table v-if="!error" v-model="items.data" md-sort="name" md-sort-order="asc" md-card>
       <md-table-toolbar>
         <div class="md-toolbar-section-start">
-          <h1 class="md-title">Входящие Sms</h1>
+          <h1 class="md-title">{{ 'incomingSms' | trans }}</h1>
         </div>
 
         <md-field md-clearable class="md-toolbar-section-end">
@@ -26,10 +26,10 @@
 
       <md-table-row slot="md-table-row" slot-scope="{ item }">
         <md-table-cell md-label="ID" md-sort-by="id" md-numeric>{{ item.id }}</md-table-cell>
-        <md-table-cell md-label="Телефон" md-sort-by="phone">{{ item.phone }}</md-table-cell>
-        <md-table-cell md-label="Текст" md-sort-by="text">{{ item.text }}</md-table-cell>
-        <md-table-cell md-label="Sim карта" md-sort-by="channel_id">{{ item.channel.name }}</md-table-cell>
-        <md-table-cell md-label="Дата получения" md-sort-by="created_at">{{ item.created_at | moment('timezone', 'Europe/Kiev', 'DD-MM-YYYY HH:mm:ss') }}</md-table-cell>
+        <md-table-cell :md-label="'phone' | trans" md-sort-by="phone">{{ item.phone }}</md-table-cell>
+        <md-table-cell :md-label="'text' | trans" md-sort-by="text">{{ item.text }}</md-table-cell>
+        <md-table-cell :md-label="'simCart' | trans" md-sort-by="channel_id">{{ item.channel.name }}</md-table-cell>
+        <md-table-cell :md-label="'receivedAt' | trans" md-sort-by="created_at">{{ item.created_at | moment('timezone', 'Europe/Kiev', 'DD-MM-YYYY HH:mm:ss') }}</md-table-cell>
       </md-table-row>
     </md-table>
     <pagination class="col bg-faded py-3" :data="items" :limit="items.per_page"
