@@ -10,7 +10,7 @@ class CreateSmsTable(Migration):
         with self.schema.create('sms') as table:
             table.big_increments('id')
             table.string('phone')
-            table.string('text')
+            table.string('text', 1000)
             table.integer('sim_msg_count').default(0)
             table.boolean('direction').default(False)
             table.timestamp('send_at').nullable()
