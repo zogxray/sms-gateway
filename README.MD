@@ -40,6 +40,12 @@ Run USSD send process
 ```console
 $ python ussd.py
 ```
+
+#### Front
+```console
+$ cd frontend && npm install && npm run dev
+```
+
 ## Setup on goip device
 
 Setup SMS-gateway address, port, SMS Client ID and Password on Goip device in Configurations->SMS. Add rows in SMS-gateway channels to listen that.
