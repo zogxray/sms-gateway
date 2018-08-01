@@ -4,8 +4,9 @@
       class="md-accent"
       md-rounded
       md-icon="error"
-      md-label="Whoops!"
-      md-description="Something went wrong.">
+      :md-label="'errorLabel' | trans"
+      :md-description="'errorDescription' | trans"
+    >
     </md-empty-state>
     <form v-if="!error" novalidate class="md-layout" @submit.prevent="validateItem">
       <md-card class="md-layout-item md-size-100 md-small-size-100">

@@ -5,8 +5,9 @@
       class="md-accent"
       md-rounded
       md-icon="error"
-      md-label="Whoops!"
-      md-description="Something went wrong.">
+      :md-label="'errorLabel' | trans"
+      :md-description="'errorDescription' | trans"
+    >
     </md-empty-state>
     <md-table v-if="!error" v-model="items.data" md-sort="name" md-sort-order="asc" md-card>
       <md-table-toolbar>
@@ -14,22 +15,23 @@
           <h1 class="md-title">{{ 'ussd' | trans }}</h1>
         </div>
         <md-field md-clearable class="md-toolbar-section-end">
-          <md-input placeholder="Поиск..." v-model="filter.text"/>
+          <md-input :placeholder="'search' | trans" v-model="filter.text"/>
         </md-field>
       </md-table-toolbar>
       <md-table-empty-state
-        md-label="No USSD found"
-        :md-description="`No USSD found. Try a different search term.`">
+        :md-label="'notFoundLabel' | trans"
+        :md-description="'notFoundDescription' | trans"
+      >
       </md-table-empty-state>
 
       <md-table-row slot="md-table-row" slot-scope="{ item }">
-        <md-table-cell md-label="ID" md-sort-by="id" md-numeric>{{ item.id }}</md-table-cell>
-        <md-table-cell md-label="USSD запрос" md-sort-by="ussd">{{ item.ussd }}</md-table-cell>
-        <md-table-cell md-label="USSD ответ" md-sort-by="answer">{{ item.answer }}</md-table-cell>
+        <md-table-cell :md-label="'id' | trans" md-sort-by="id" md-numeric>{{ item.id }}</md-table-cell>
+        <md-table-cell :md-label="'ussdRequest' | trans" md-sort-by="ussd">{{ item.ussd }}</md-table-cell>
+        <md-table-cell :md-label="'ussdAnswer' | trans" md-sort-by="answer">{{ item.answer }}</md-table-cell>
         <md-table-cell :md-label="'simCart' | trans" md-sort-by="channel_id">{{ item.channel.name }}</md-table-cell>
-        <md-table-cell md-label="Запрос отправлен" md-sort-by="send_at">{{ item.send_at | moment('timezone', 'Europe/Kiev', 'DD-MM-YYYY HH:mm:ss') }}</md-table-cell>
-        <md-table-cell md-label="Ответ получен" md-sort-by="received_at">{{ item.received_at | moment('timezone', 'Europe/Kiev', 'DD-MM-YYYY HH:mm:ss') }}</md-table-cell>
-        <md-table-cell md-label="Дата создания" md-sort-by="created_at">{{ item.created_at | moment('timezone', 'Europe/Kiev', 'DD-MM-YYYY HH:mm:ss') }}</md-table-cell>
+        <md-table-cell :md-label="'requestSentAt' | trans" md-sort-by="send_at">{{ item.send_at | moment('timezone', 'Europe/Kiev', 'DD-MM-YYYY HH:mm:ss') }}</md-table-cell>
+        <md-table-cell :md-label="'requestReceivedAt' | trans" md-sort-by="received_at">{{ item.received_at | moment('timezone', 'Europe/Kiev', 'DD-MM-YYYY HH:mm:ss') }}</md-table-cell>
+        <md-table-cell :md-label="'createdAt' | trans" md-sort-by="created_at">{{ item.created_at | moment('timezone', 'Europe/Kiev', 'DD-MM-YYYY HH:mm:ss') }}</md-table-cell>
       </md-table-row>
     </md-table>
     <pagination class="col bg-faded py-3" :data="items" :limit="items.per_page"

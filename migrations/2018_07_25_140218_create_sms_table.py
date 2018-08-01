@@ -14,6 +14,7 @@ class CreateSmsTable(Migration):
             table.integer('sim_msg_count').default(0)
             table.boolean('direction').default(False)
             table.timestamp('send_at').nullable()
+            table.timestamp('received_at').nullable()
 
             table.integer('channel_id').unsigned()
             table.foreign('channel_id').references('id').on('channels').on_delete('cascade')

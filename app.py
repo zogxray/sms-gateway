@@ -270,9 +270,19 @@ def lang():
                 'updateSim': 'Update SIM',
                 'phone': 'Phone',
                 'text': 'Text',
-                'receivedAt': 'Received At',
+                'receivedAt': 'Received at',
                 'errorLabel': 'Whoops!',
                 'errorDescription': 'Something went wrong.',
+                'notFoundLabel': 'Not found!',
+                'notFoundDescription': 'No found. Try a different search term.',
+                'search': 'Search...',
+                'id': 'ID',
+                'createdAt': 'Created at',
+                'requestSentAt': 'Request sent at',
+                'requestReceivedAt': 'Request received at',
+                'ussdRequest': 'USSD request',
+                'ussdAnswer': 'USSD answer',
+
             },
             'ru': {
                 'title': 'SMS-шлюз',
@@ -290,6 +300,15 @@ def lang():
                 'receivedAt': 'Дата получения',
                 'errorLabel': 'Упс!',
                 'errorDescription': 'Что-то пошло не так.',
+                'notFoundLabel': 'Не найдено!',
+                'notFoundDescription': 'Не найдено. Попробуйте другой поисковый запрос.',
+                'search': 'Поиск...',
+                'id': 'ID',
+                'createdAt': 'Дата создания',
+                'requestSentAt': 'Запрос отправлен',
+                'requestReceivedAt': 'Запрос получен',
+                'ussdRequest': 'USSD запрос',
+                'ussdAnswer': 'USSD ответ',
             }
         }
     )
