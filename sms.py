@@ -69,5 +69,5 @@ while True:
 
         sms.update(send_at=datetime.datetime.now())
 
-    print('Sleep ' + str(datetime.datetime.now()))
+    print('Sleep SMS 10 sec ' + str(datetime.datetime.now()))
     time.sleep(10)

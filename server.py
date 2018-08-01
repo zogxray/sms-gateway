@@ -61,6 +61,3 @@ while True:
             message = message.encode('utf-8')
 
             sock.sendto(message, client_address)
-
-    time.sleep(10)
-

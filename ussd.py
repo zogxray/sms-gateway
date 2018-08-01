@@ -29,10 +29,14 @@ while True:
         ussd.update(answer=payload, received_at=datetime.datetime.now())
 
         if ussd.ussd == ussd.channel.balance_ussd:
-            balance = re.findall('\d+\.\d+', payload)[0]
+            balance = re.findall('\d+[,.]\d+', payload)[0]
+            isMinus = True if re.search(r'Минус', payload) else False
             if balance:
-                print(balance)
-                ussd.channel.update(balance=Decimal(balance))
+                balance = balance.replace(",", ".")
+                if isMinus:
+                    ussd.channel.update(balance=-abs(Decimal(balance)))
+                else:
+                    ussd.channel.update(balance=Decimal(balance))
 
-    print('Sleep ' + str(datetime.datetime.now()))
+    print('Sleep USSD 10 sec ' + str(datetime.datetime.now()))
     time.sleep(10)
