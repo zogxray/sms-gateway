@@ -44,12 +44,14 @@ def channels_add():
     sim_id = rdata.get('sim_id', None)
     sim_pass = rdata.get('sim_pass', None)
     phone = rdata.get('phone', None)
+    balance_ussd = rdata.get('balance_ussd', None)
 
     channel = Channel()
     channel.name = name
     channel.sim_id = sim_id
     channel.sim_pass = sim_pass
     channel.phone = phone
+    channel.balance_ussd = balance_ussd
     channel.save()
 
     return jsonify(channel)

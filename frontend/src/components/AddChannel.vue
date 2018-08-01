@@ -37,9 +37,14 @@
                 <span class="md-error" v-if="!$v.form.sim_pass.required">Ключ обязателен для заполнения</span>
               </md-field>
               <md-field :class="getValidationClass('phone')">
-                <label for="name">SIM-канал телефон</label>
+                <label for="sim-phone">SIM-канал телефон</label>
                 <md-input name="sim-phone" id="sim-phone" autocomplete="given-sim-phone" v-model="form.phone" :disabled="loading" />
                 <span class="md-error" v-if="!$v.form.phone.required">Телефон обязателен для заполнения</span>
+              </md-field>
+              <md-field :class="getValidationClass('balance_ussd')">
+                <label for="sim-balance">USSD-код проверки баланса</label>
+                <md-input name="sim-balance" id="sim-balance" autocomplete="given-sim-balance" v-model="form.balance_ussd" :disabled="loading" />
+                <span class="md-error" v-if="!$v.form.balance_ussd.required">USSD-код проверки баланса обязателен для заполнения</span>
               </md-field>
             </div>
           </div>
@@ -65,7 +70,8 @@ export default {
       name: null,
       sim_id: null,
       sim_pass: null,
-      phone: null
+      phone: null,
+      balance_ussd: null
     },
     loading: false,
     error: null
@@ -82,6 +88,9 @@ export default {
         required
       },
       phone: {
+        required
+      },
+      balance_ussd: {
         required
       }
     }
