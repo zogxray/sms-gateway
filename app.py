@@ -271,6 +271,8 @@ def lang():
                 'phone': 'Phone',
                 'text': 'Text',
                 'receivedAt': 'Received At',
+                'errorLabel': 'Whoops!',
+                'errorDescription': 'Something went wrong.',
             },
             'ru': {
                 'title': 'SMS-шлюз',
@@ -286,6 +288,8 @@ def lang():
                 'phone': 'Телефон',
                 'text': 'Текст',
                 'receivedAt': 'Дата получения',
+                'errorLabel': 'Упс!',
+                'errorDescription': 'Что-то пошло не так.',
             }
         }
     )
