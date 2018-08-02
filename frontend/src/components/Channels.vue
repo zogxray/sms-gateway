@@ -28,16 +28,16 @@
 
       <md-table-row slot="md-table-row" slot-scope="{ item }">
         <md-table-cell :md-label="'id' | trans" md-sort-by="id" md-numeric>{{ item.id }}</md-table-cell>
-        <md-table-cell md-label="Название" md-sort-by="name">{{ item.name }}</md-table-cell>
+        <md-table-cell :md-label="'name' | trans" md-sort-by="name">{{ item.name }}</md-table-cell>
         <md-table-cell :md-label="'phone' | trans" md-sort-by="phone">{{ item.phone }}</md-table-cell>
-        <md-table-cell md-label="SIM ID канала" md-sort-by="sim_id">{{ item.sim_id }}</md-table-cell>
-        <md-table-cell md-label="SIM ключ канала" md-sort-by="sim_pass">{{ item.sim_pass }}</md-table-cell>
-        <md-table-cell md-label="Баланс" md-sort-by="balance">{{ item.balance }}</md-table-cell>
-        <md-table-cell md-label="Активность SIM" md-sort-by="last_live_at">{{ item.last_live_at | moment('timezone', 'Europe/Kiev','D-MM-YYYY HH:mm:ss') }}</md-table-cell>
+        <md-table-cell :md-label="'sim_id' | trans" md-sort-by="sim_id">{{ item.sim_id }}</md-table-cell>
+        <md-table-cell :md-label="'sim_pass' | trans" md-sort-by="sim_pass">{{ item.sim_pass }}</md-table-cell>
+        <md-table-cell :md-label="'balance' | trans" md-sort-by="balance">{{ item.balance }}</md-table-cell>
+        <md-table-cell :md-label="'last_live_at' | trans" md-sort-by="last_live_at">{{ item.last_live_at | moment('timezone', 'Europe/Kiev','D-MM-YYYY HH:mm:ss') }}</md-table-cell>
         <md-table-cell :md-label="'createdAt' | trans" md-sort-by="created_at">{{ item.created_at | moment('timezone', 'Europe/Kiev', 'DD-MM-YYYY HH:mm:ss') }}</md-table-cell>
-        <md-table-cell md-label="Изменить">
+        <md-table-cell :md-label="'edit' | trans">
           <router-link :to="{ name: 'EditChannel', params: {id: item.id}}">
-            Изменить
+            {{ 'edit' | trans }}
           </router-link>
         </md-table-cell>
       </md-table-row>

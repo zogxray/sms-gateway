@@ -18,16 +18,16 @@
           <div class="md-layout md-gutter">
             <div class="md-layout-item md-small-size-10name0">
               <md-field :class="getValidationClass('ussd')">
-                <label for="ussd">USDD</label>
+                <label for="ussd">{{ 'ussd' | trans }}</label>
                 <md-input name="ussd" id="ussd" autocomplete="given-ussd" v-model="form.ussd" :disabled="loading" />
-                <span class="md-error" v-if="!$v.form.ussd.required">USDD обязателен для заполнения</span>
+                <span class="md-error" v-if="!$v.form.ussd.required">{{ 'form.ussd.required' | trans }}</span>
               </md-field>
               <md-field :class="getValidationClass('channel_id')">
-                <label for="channel-id">ID канала</label>
+                <label for="channel-id">{{'channel_id' | trans}}</label>
                 <md-select name="channel-id" id="channel-id" v-model="form.channel_id" md-dense :disabled="loading">
                   <md-option v-for="channel in channels" v-bind:key="channel.id" v-bind:value="channel.id">{{channel.name}}</md-option>
                 </md-select>
-                <span class="md-error" v-if="!$v.form.channel_id.required">ID канала обязателен для заполнения</span>
+                <span class="md-error" v-if="!$v.form.channel_id.required">{{'form.channel_id.required' | trans}}</span>
               </md-field>
             </div>
           </div>

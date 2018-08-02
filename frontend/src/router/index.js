@@ -53,11 +53,6 @@ export default new Router({
       component: SendUssd
     },
     {
-      path: '/',
-      name: 'Ussd',
-      component: Ussd
-    },
-    {
       path: '/channels',
       name: 'Channels',
       component: Channels

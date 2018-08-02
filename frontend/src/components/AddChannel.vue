@@ -16,36 +16,36 @@
         </md-card-header>
 
         <md-toolbar class="md-accent">
-          <p>Передающий канал должен быть настроен на GoIP устройстве. Поле активность в списке каналов покажет дату последнего запроса с утройства</p>
+          <p>{{ 'channel_warring' | trans }}</p>
         </md-toolbar>
 
         <md-card-content>
           <div class="md-layout md-gutter">
             <div class="md-layout-item md-small-size-10name0">
               <md-field :class="getValidationClass('name')">
-                <label for="name">Название</label>
+                <label for="name">{{ 'name' | trans }}</label>
                 <md-input name="name" id="name" autocomplete="given-name" v-model="form.name" :disabled="loading" />
-                <span class="md-error" v-if="!$v.form.name.required">Название обязательно для заполнения</span>
+                <span class="md-error" v-if="!$v.form.name.required">{{ 'form.name.required' | trans }}</span>
               </md-field>
               <md-field :class="getValidationClass('sim_id')">
-                <label for="sim-id">SIM-канал ID</label>
+                <label for="sim-id">{{ 'sim_id' | trans }}</label>
                 <md-input name="sim-id" id="sim-id" autocomplete="given-sim-id" v-model="form.sim_id" :disabled="loading" />
-                <span class="md-error" v-if="!$v.form.sim_id.required">ID обязателен для заполнения</span>
+                <span class="md-error" v-if="!$v.form.sim_id.required">{{ 'form.sim_id.required' | trans }}</span>
               </md-field>
               <md-field :class="getValidationClass('sim_pass')">
-                <label for="sim-pass">SIM-канал ключ</label>
+                <label for="sim-pass">{{ 'sim_pass' | trans }}</label>
                 <md-input name="sim-pass" id="sim-pass" autocomplete="given-sim-pass" v-model="form.sim_pass" :disabled="loading" />
-                <span class="md-error" v-if="!$v.form.sim_pass.required">Ключ обязателен для заполнения</span>
+                <span class="md-error" v-if="!$v.form.sim_pass.required">{{ 'form.sim_pass.required' | trans }}</span>
               </md-field>
               <md-field :class="getValidationClass('phone')">
-                <label for="sim-phone">SIM-канал телефон</label>
+                <label for="sim-phone">{{ 'phone' | trans }}</label>
                 <md-input name="sim-phone" id="sim-phone" autocomplete="given-sim-phone" v-model="form.phone" :disabled="loading" />
-                <span class="md-error" v-if="!$v.form.phone.required">Телефон обязателен для заполнения</span>
+                <span class="md-error" v-if="!$v.form.phone.required">{{ 'form.phone.required' | trans }}</span>
               </md-field>
               <md-field :class="getValidationClass('balance_ussd')">
-                <label for="sim-balance">USSD-код проверки баланса</label>
+                <label for="sim-balance">{{ 'ussd_balance' | trans }}</label>
                 <md-input name="sim-balance" id="sim-balance" autocomplete="given-sim-balance" v-model="form.balance_ussd" :disabled="loading" />
-                <span class="md-error" v-if="!$v.form.balance_ussd.required">USSD-код проверки баланса обязателен для заполнения</span>
+                <span class="md-error" v-if="!$v.form.balance_ussd.required">{{ 'form.balance_ussd.required' | trans }}</span>
               </md-field>
             </div>
           </div>

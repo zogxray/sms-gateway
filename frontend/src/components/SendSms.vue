@@ -19,19 +19,19 @@
               <md-field :class="getValidationClass('phone')">
                 <label for="phone">{{ 'phone' | trans }}</label>
                 <md-input name="phone" id="phone" autocomplete="given-phone" v-model="form.phone" :disabled="loading" />
-                <span class="md-error" v-if="!$v.form.phone.required">Телефон обязателен для заполнения</span>
+                <span class="md-error" v-if="!$v.form.phone.required">{{ 'form.phone.required' | trans }}</span>
               </md-field>
               <md-field :class="getValidationClass('text')">
                 <label for="text">{{'text' | trans}}</label>
                 <md-input name="text" id="text" autocomplete="given-text" v-model="form.text" :disabled="loading" />
-                <span class="md-error" v-if="!$v.form.text.required">Текст обязателен для заполнения</span>
+                <span class="md-error" v-if="!$v.form.text.required">{{'form.text.required' | trans}}</span>
               </md-field>
               <md-field :class="getValidationClass('channel_id')">
-                <label for="channel-id">ID канала</label>
+                <label for="channel-id">{{'channel_id' | trans}}</label>
                 <md-select name="channel-id" id="channel-id" v-model="form.channel_id" md-dense :disabled="loading">
                   <md-option v-for="channel in channels" v-bind:key="channel.id" v-bind:value="channel.id">{{channel.name}}</md-option>
                 </md-select>
-                <span class="md-error" v-if="!$v.form.channel_id.required">ID канала обязателен для заполнения</span>
+                <span class="md-error" v-if="!$v.form.channel_id.required">{{'form.channel_id.required' | trans}}</span>
               </md-field>
             </div>
           </div>
