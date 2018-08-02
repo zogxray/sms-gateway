@@ -117,7 +117,7 @@ export default {
     },
     getItem: function () {
       let self = this
-      self.$root.axios.get('channels/' + self.id + '/edit')
+      self.$root.axios.get('channels/' + self.id)
         .then(function (response) {
           self.form = {
             name: response.data.name,

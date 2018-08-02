@@ -37,7 +37,7 @@ def server_error(e):
     # note that we set the 404 status explicitly
     return jsonify({500: 'Oops. Something went wrong'})
 
-@app.route('/channels/<int:id>/edit', methods=['GET'])
+@app.route('/channels/<int:id>', methods=['GET'])
 def channels_edit(id):
     channel = Channel.find(id)
 
@@ -299,6 +299,7 @@ def lang():
                 'form.channel_id.required': 'Channel ID is required',
                 'form.ussd.required': 'USSD is required',
                 'form.text.required': 'Text is required',
+                'check_balance': 'Check',
             },
             'ru': {
                 'title': 'SMS-шлюз',
@@ -342,6 +343,7 @@ def lang():
                 'form.channel_id.required': 'ID канала обязателен для заполнения',
                 'form.ussd.required': 'USDD обязателен для заполнения',
                 'form.text.required': 'Текст обязателен для заполнения',
+                'check_balance': 'Проверить',
             }
         }
     )

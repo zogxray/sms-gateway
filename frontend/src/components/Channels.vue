@@ -33,6 +33,14 @@
         <md-table-cell :md-label="'sim_id' | trans" md-sort-by="sim_id">{{ item.sim_id }}</md-table-cell>
         <md-table-cell :md-label="'sim_pass' | trans" md-sort-by="sim_pass">{{ item.sim_pass }}</md-table-cell>
         <md-table-cell :md-label="'balance' | trans" md-sort-by="balance">{{ item.balance }}</md-table-cell>
+        <md-table-cell :md-label="'check_balance' | trans">
+          <md-button v-on:click.prevent="checkBalance(item)"
+                     class="md-icon-button md-dense md-raised"
+                     v-bind:class="{ 'md-accent': checkInCheckers(item), 'md-primary': !checkInCheckers(item) }"
+          >
+            <md-icon>cached</md-icon>
+          </md-button>
+        </md-table-cell>
         <md-table-cell :md-label="'last_live_at' | trans" md-sort-by="last_live_at">{{ item.last_live_at | moment('timezone', 'Europe/Kiev','D-MM-YYYY HH:mm:ss') }}</md-table-cell>
         <md-table-cell :md-label="'createdAt' | trans" md-sort-by="created_at">{{ item.created_at | moment('timezone', 'Europe/Kiev', 'DD-MM-YYYY HH:mm:ss') }}</md-table-cell>
         <md-table-cell :md-label="'edit' | trans">
@@ -57,6 +65,7 @@ export default {
     items: {
       data: []
     },
+    checkers: [],
     loading: false,
     interval: null,
     error: null
@@ -68,6 +77,14 @@ export default {
       this.filter = filter
     } else {
       this.getFiltered(this.$route.params.page)
+    }
+  },
+  computed: {
+    classObject: function () {
+      return {
+        active: this.isActive && !this.error,
+        'text-danger': this.error && this.error.type === 'fatal'
+      }
     }
   },
   watch: {
@@ -108,6 +125,55 @@ export default {
           self.error = error
           self.loading = false
         })
+    },
+    checkInCheckers: function (item) {
+      let it = item
+
+      return (this.checkers.filter(e => e.id === it.id).length > 0)
+    },
+    checkBalance: function (item) {
+      let self = this
+      let it = item
+      console.log(self.checkInCheckers(item))
+
+      if (self.checkInCheckers(item)) {
+        return
+      }
+
+      self.$root.axios.post('ussd/add', {
+          ussd: item.balance_ussd,
+          channel_id: item.id
+        })
+        .then(function (response) {
+          let checker = {
+            id: it.id,
+            interval: setInterval(function () {
+              self.loading = true
+              self.$root.axios.get('channels/' + it.id)
+                .then(function (response) {
+                  let index = self.items.data.findIndex(e => e.id === response.data.id)
+                  if (self.items.data[index].updated_at !== response.data.updated_at)
+                  {
+                    let checker_index = self.checkers.findIndex(e => e.id === response.data.id)
+                    self.checkers.splice(checker_index, 1)
+                    self.items.data[index] = response.data
+                    self.loading = false
+                  }
+                })
+                .catch(function (error) {
+                  self.error = error
+                  self.checkers = []
+                  self.loading = false
+                })
+            }, 5000)
+          }
+          self.checkers.push(checker)
+          self.loading = false
+        })
+        .catch(function (error) {
+          self.error = error
+          self.loading = false
+      })
     }
   }
 }

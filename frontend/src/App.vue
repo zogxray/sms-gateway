@@ -83,7 +83,7 @@ export default {
 
     let locale = localStorage.getItem('locale')
 
-    if (null !== locale) {
+    if (locale !== null) {
       this.locale = locale
     }
   },
