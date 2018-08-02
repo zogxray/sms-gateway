@@ -80,6 +80,12 @@ export default {
   }),
   created: function () {
     this.getLang()
+
+    let locale = localStorage.getItem('locale')
+
+    if (null !== locale) {
+      this.locale = locale
+    }
   },
   methods: {
     getLang: function () {
@@ -96,6 +102,7 @@ export default {
     setLang: function (lang) {
       this.locale = lang
       trans.translation = this.translations[this.locale]
+      localStorage.setItem('locale', lang)
     }
   }
 }
