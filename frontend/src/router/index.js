@@ -71,6 +71,11 @@ export default new Router({
       path: '/channels/add',
       name: 'AddChannel',
       component: AddChannel
+    },
+    {
+      path: '/channels/:id/edit',
+      name: 'EditChannel',
+      component: AddChannel
     }
   ]
 })

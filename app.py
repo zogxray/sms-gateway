@@ -37,6 +37,32 @@ def server_error(e):
     # note that we set the 404 status explicitly
     return jsonify({500: 'Oops. Something went wrong'})
 
+@app.route('/channels/<int:id>/edit', methods=['GET'])
+def channels_edit(id):
+    channel = Channel.find(id)
+
+    return jsonify(channel)
+
+@app.route('/channels/<int:id>/update', methods=['POST'])
+def channels_update(id):
+    rdata = request.get_json()
+
+    name = rdata.get('name', None)
+    sim_id = rdata.get('sim_id', None)
+    sim_pass = rdata.get('sim_pass', None)
+    phone = rdata.get('phone', None)
+    balance_ussd = rdata.get('balance_ussd', None)
+
+    channel = Channel.find(id)
+    channel.name = name
+    channel.sim_id = sim_id
+    channel.sim_pass = sim_pass
+    channel.phone = phone
+    channel.balance_ussd = balance_ussd
+    channel.save()
+
+    return jsonify(channel)
+
 @app.route('/channels/add', methods=['POST'])
 def channels_add():
     rdata = request.get_json()
@@ -105,7 +131,7 @@ def outgoing_sms(page=1):
     query = Sms.with_('channel').where('direction', True)
 
     if text is not None:
-        query = query.where('phone', 'like', '%' + text + '%')
+        query = query.where('text', 'like', '%' + text + '%')
 
     items = query.order_by('created_at', 'DESC').paginate(25, page)
 
@@ -173,7 +199,7 @@ def incoming_sms(page=1):
     query = Sms.with_('channel').where('direction', False)
 
     if text:
-        query = query.where('phone', 'like', '%' + text + '%')
+        query = query.where('text', 'like', '%' + text + '%')
 
     items = query.order_by('created_at', 'DESC').paginate(25, page)
 

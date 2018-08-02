@@ -33,6 +33,11 @@
         <md-table-cell md-label="Баланс" md-sort-by="balance">{{ item.balance }}</md-table-cell>
         <md-table-cell md-label="Активность" md-sort-by="last_live_at" md-tooltip="Время последней активности канала">{{ item.last_live_at | moment('timezone', 'Europe/Kiev','D-MM-YYYY HH:mm:ss') }}</md-table-cell>
         <md-table-cell md-label="Дата создания" md-sort-by="created_at">{{ item.created_at | moment('timezone', 'Europe/Kiev', 'DD-MM-YYYY HH:mm:ss') }}</md-table-cell>
+        <md-table-cell md-label="ID" md-sort-by="id" md-numeric>
+          <router-link :to="{ name: 'EditChannel', params: {id: item.id}}">
+            Изменить
+          </router-link>
+        </md-table-cell>
       </md-table-row>
     </md-table>
     <pagination class="col bg-faded py-3" :data="items" :limit="items.per_page"

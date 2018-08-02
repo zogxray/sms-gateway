@@ -50,7 +50,8 @@
           </div>
         </md-card-content>
         <md-card-actions>
-          <md-button type="submit" class="md-primary" :disabled="loading">Добавить канал</md-button>
+          <md-button v-if="id" type="submit" class="md-primary" :disabled="loading">Изменить канал</md-button>
+          <md-button v-if="!id" type="submit" class="md-primary" :disabled="loading">Добавить канал</md-button>
         </md-card-actions>
       </md-card>
     </form>
@@ -73,6 +74,7 @@ export default {
       phone: null,
       balance_ussd: null
     },
+    id: null,
     loading: false,
     error: null
   }),
@@ -95,6 +97,13 @@ export default {
       }
     }
   },
+  created: function () {
+    this.id = this.$route.params.id
+
+    if (this.id !== null) {
+      this.getItem()
+    }
+  },
   methods: {
     getValidationClass: function (fieldName) {
       const field = this.$v.form[fieldName]
@@ -105,11 +114,37 @@ export default {
         }
       }
     },
+    getItem: function () {
+      let self = this
+      self.$root.axios.get('channels/' + self.id + '/edit')
+        .then(function (response) {
+          self.form = {
+            name: response.data.name,
+            sim_id: response.data.sim_id,
+            sim_pass: response.data.sim_pass,
+            phone: response.data.phone,
+            balance_ussd: response.data.balance_ussd
+          }
+          self.loading = false
+        })
+        .catch(function (error) {
+          self.error = error
+          self.loading = false
+        })
+    },
     saveItem: function () {
       let self = this
       self.loading = true
 
-      self.$root.axios.post('channels/add', self.form)
+      let route = ''
+
+      if (self.id !== 'undefined') {
+        route = 'channels/' + self.id + '/update'
+      } else {
+        route = 'channels/add'
+      }
+
+      self.$root.axios.post(route, self.form)
         .then(function (response) {
           self.items = response.data
           self.loading = false
