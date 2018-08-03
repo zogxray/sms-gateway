@@ -40,12 +40,19 @@ const app = new Vue({
   components: {App},
   template: '<App/>',
   data: {
-    token: null,
-    axios: axios.create({
+    auth: {
+      token: null,
+      expired_at: null
+    },
+    axios: null
+  },
+  created: function () {
+    let self = this
+    this.axios = axios.create({
       baseURL: process.env.ROOT_API,
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + this.token
+        'Authorization': 'Bearer ' + self.auth.token
       }
     })
   }
@@ -53,8 +60,7 @@ const app = new Vue({
 
 router.beforeEach((to, from, next) => {
   if (to.name !== 'Login') {
-    console.log(app.$data.token)
-    if (app.$data.token) {
+    if (app.$data.auth.token !== null) {
       next()
     } else {
       next({name: 'Login'})

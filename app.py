@@ -4,6 +4,9 @@ from flask_orator import Orator, jsonify
 from models.sms import Sms
 from models.channel import Channel
 from models.ussd import Ussd
+from models.user import User
+from werkzeug.security import generate_password_hash, check_password_hash
+from datetime import datetime, timedelta
 
 # Configuration
 DEBUG = True
@@ -186,6 +189,22 @@ def incoming_latest():
     sms = Sms.with_('channel').where('created_at', '>', date).where('direction', False).order_by('created_at', 'ASC').first()
 
     return jsonify(sms)
+
+@app.route('/login', methods=['POST'])
+def login():
+    rdata = request.get_json()
+    login = rdata.get('login', None)
+    password = rdata.get('password', None)
+
+    user = User.where('login', login).first()
+
+    if user and check_password_hash(user.password, password):
+        expired_at = datetime.now() + timedelta(hours=1)
+
+        user.update(token='111', expired_at=expired_at)
+        return jsonify(user)
+
+    return jsonify({'error': 'User or password are incorrect'}), 401
 
 @app.route('/incoming-sms/', methods=['POST', 'GET'])
 @app.route('/incoming-sms/<int:page>', methods=['POST', 'GET'])
