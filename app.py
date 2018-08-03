@@ -37,7 +37,7 @@ def server_error(e):
     # note that we set the 404 status explicitly
     return jsonify({500: 'Oops. Something went wrong'})
 
-@app.route('/channels/<int:id>', methods=['GET'])
+@app.route('/channel/<int:id>', methods=['GET'])
 def channels_edit(id):
     channel = Channel.find(id)
 

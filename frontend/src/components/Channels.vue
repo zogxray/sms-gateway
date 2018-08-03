@@ -134,29 +134,28 @@ export default {
     checkBalance: function (item) {
       let self = this
       let it = item
-      console.log(self.checkInCheckers(item))
 
       if (self.checkInCheckers(item)) {
         return
       }
 
       self.$root.axios.post('ussd/add', {
-          ussd: item.balance_ussd,
-          channel_id: item.id
-        })
+        ussd: item.balance_ussd,
+        channel_id: item.id
+      })
         .then(function (response) {
           let checker = {
             id: it.id,
             interval: setInterval(function () {
               self.loading = true
-              self.$root.axios.get('channels/' + it.id)
+              self.$root.axios.get('channel/' + it.id)
                 .then(function (response) {
                   let index = self.items.data.findIndex(e => e.id === response.data.id)
-                  if (self.items.data[index].updated_at !== response.data.updated_at)
-                  {
-                    let checker_index = self.checkers.findIndex(e => e.id === response.data.id)
-                    self.checkers.splice(checker_index, 1)
-                    self.items.data[index] = response.data
+                  if (self.items.data[index].updated_at !== response.data.updated_at) {
+                    let checkerIndex = self.checkers.findIndex(e => e.id === response.data.id)
+                    clearInterval(self.checkers[checkerIndex].interval)
+                    self.checkers.splice(checkerIndex, 1)
+                    self.$set(self.items.data, index, response.data)
                     self.loading = false
                   }
                 })
@@ -165,7 +164,7 @@ export default {
                   self.checkers = []
                   self.loading = false
                 })
-            }, 5000)
+            }, 1000)
           }
           self.checkers.push(checker)
           self.loading = false
@@ -173,7 +172,7 @@ export default {
         .catch(function (error) {
           self.error = error
           self.loading = false
-      })
+        })
     }
   }
 }
