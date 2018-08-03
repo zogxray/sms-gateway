@@ -7,6 +7,7 @@ import Channels from '@/components/Channels'
 import AddChannel from '@/components/AddChannel'
 import Ussd from '@/components/Ussd'
 import SendUssd from '@/components/SendUssd'
+import Login from '@/components/Login'
 
 Vue.use(Router)
 
@@ -71,6 +72,11 @@ export default new Router({
       path: '/channels/:id/edit',
       name: 'EditChannel',
       component: AddChannel
+    },
+    {
+      path: '/login',
+      name: 'Login',
+      component: Login
     }
   ]
 })
