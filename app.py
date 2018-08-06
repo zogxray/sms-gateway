@@ -45,19 +45,22 @@ def server_error(e):
 def require_token(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
+        response = {
+            'message': 'Authorisation error. Invalid access token'
+        }
         auth_header = request.headers.get('Authorization')
+
+        if not auth_header:
+            return jsonify(response), 401
+
         access_token = auth_header.split(" ")[1]
         if access_token:
             user_id = tokens.decode_token(access_token)
             user = User.find(user_id)
             if user:
                 return func(*args, **kwargs)
-            else:
-                response = {
-                   'message': 'Authorisation error. Invalid access token'
-                }
 
-                return jsonify(response), 401
+            return jsonify(response), 401
 
     return wrapper
 
