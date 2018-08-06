@@ -7,6 +7,8 @@ from models.ussd import Ussd
 from models.user import User
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime, timedelta
+from security import tokens
+from functools import wraps
 
 # Configuration
 DEBUG = True
@@ -39,6 +41,25 @@ def page_not_found(e):
 def server_error(e):
     # note that we set the 404 status explicitly
     return jsonify({500: 'Oops. Something went wrong'})
+
+def require_token(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        auth_header = request.headers.get('Authorization')
+        access_token = auth_header.split(" ")[1]
+        if access_token:
+            user_id = tokens.decode_token(access_token)
+            user = User.find(user_id)
+            if user:
+                return func(*args, **kwargs)
+            else:
+                response = {
+                   'message': 'Authorisation error. Invalid access token'
+                }
+
+                return jsonify(response), 401
+
+    return wrapper
 
 @app.route('/channel/<int:id>', methods=['GET'])
 def channels_edit(id):
@@ -154,6 +175,7 @@ def outgoing_sms(page=1):
 
 @app.route('/ussd/', methods=['POST', 'GET'])
 @app.route('/ussd/<int:page>', methods=['POST', 'GET'])
+@require_token
 def ussd(page=1):
     rdata = request.get_json()
     if rdata is None:
@@ -199,9 +221,10 @@ def login():
     user = User.where('login', login).first()
 
     if user and check_password_hash(user.password, password):
-        expired_at = datetime.now() + timedelta(hours=1)
+        expired_at = datetime.utcnow() + timedelta(minutes=1)
+        token = tokens.generate_token(user)
 
-        user.update(token='111', expired_at=expired_at)
+        user.update(token=token, expired_at=expired_at)
         return jsonify(user)
 
     return jsonify({'error': 'User or password are incorrect'}), 401

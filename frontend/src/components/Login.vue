@@ -87,7 +87,6 @@ export default {
         .then(function (response) {
           self.items = response.data
           self.$root.auth.token = response.data.token
-          self.$root.auth.expired_at = response.data.expired_at
           self.loading = false
           self.$router.push({name: 'IncomingSms'})
         })
