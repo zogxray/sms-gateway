@@ -75,6 +75,7 @@ const app = new Vue({
       return response
     }, function (error) {
       if (error.response.status === 401) {
+        self.auth.token = null
         self.$router.push({name: 'Login'})
       } else {
         return Promise.reject(error)

@@ -42,11 +42,23 @@
             <span class="md-list-item-text">{{ 'addSim' | trans }}</span>
           </router-link>
 
+          <md-list-item v-if="$root.auth.token" tag="md-list-item" v-on:click.prevent="logout()">
+            <md-icon>remove</md-icon>
+            <span class="md-list-item-text">Logout</span>
+          </md-list-item>
         </md-list>
+
         <md-list>
-          <md-list-item v-on:click.prevent="setLang('ru')">Ru</md-list-item>
-          <md-list-item v-on:click.prevent="setLang('en')">En</md-list-item>
+          <md-list-item tag="md-list-item" v-on:click.prevent="setLang('ru')">
+            <md-icon>flag</md-icon>
+            <span class="md-list-item-text">Ru</span>
+          </md-list-item>
+          <md-list-item tag="md-list-item" v-on:click.prevent="setLang('en')">
+            <md-icon>flag</md-icon>
+            <span class="md-list-item-text">En</span>
+          </md-list-item>
         </md-list>
+
       </md-app-drawer>
 
       <md-app-content>
@@ -88,6 +100,10 @@ export default {
     }
   },
   methods: {
+    logout: function () {
+      this.$root.auth.token = null
+      this.$router.push({name: 'Login'})
+    },
     getLang: function () {
       let self = this
       self.$root.axios.get('lang.js')
