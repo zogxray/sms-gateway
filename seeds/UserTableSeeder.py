@@ -9,16 +9,16 @@ class UserTableSeeder(Seeder):
         """
         self.db.table('users').insert({
             'login': 'zogxray@gmail.com',
-            'password': generate_password_hash('777777'),
+            'password': generate_password_hash('6prxk6ap'),
         })
 
         self.db.table('users').insert({
-            'login': 'anna@gmail.com',
-            'password': generate_password_hash('777777'),
+            'login': 'a.flora@gepur.org',
+            'password': generate_password_hash('ZnSBsNMr'),
         })
 
         self.db.table('users').insert({
-            'login': 'senchuk@gmail.com',
-            'password': generate_password_hash('777777'),
+            'login': 'admin@gepur.org',
+            'password': generate_password_hash('UwuzTP8e'),
         })
 

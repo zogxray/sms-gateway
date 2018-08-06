@@ -65,12 +65,14 @@ def require_token(func):
     return wrapper
 
 @app.route('/channel/<int:id>', methods=['GET'])
+@require_token
 def channels_edit(id):
     channel = Channel.find(id)
 
     return jsonify(channel)
 
 @app.route('/channels/<int:id>/update', methods=['POST'])
+@require_token
 def channels_update(id):
     rdata = request.get_json()
 
@@ -91,6 +93,7 @@ def channels_update(id):
     return jsonify(channel)
 
 @app.route('/channels/add', methods=['POST'])
+@require_token
 def channels_add():
     rdata = request.get_json()
     name = rdata.get('name', None)
@@ -110,6 +113,7 @@ def channels_add():
     return jsonify(channel)
 
 @app.route('/outgoing-sms/add', methods=['POST'])
+@require_token
 def outgoing_sms_add():
     rdata = request.get_json()
     phone = rdata.get('phone', None)
@@ -126,6 +130,7 @@ def outgoing_sms_add():
     return jsonify(item)
 
 @app.route('/ussd/add', methods=['POST'])
+@require_token
 def ussd_add():
     rdata = request.get_json()
     ussd = rdata.get('ussd', None)
@@ -139,6 +144,7 @@ def ussd_add():
     return jsonify(item)
 
 @app.route('/outgoing-sms/latest', methods=['POST'])
+@require_token
 def outgoing_latest():
     rdata = request.get_json()
     date = rdata.get('date', None)
@@ -148,6 +154,7 @@ def outgoing_latest():
 
 @app.route('/outgoing-sms/', methods=['POST', 'GET'])
 @app.route('/outgoing-sms/<int:page>', methods=['POST', 'GET'])
+@require_token
 def outgoing_sms(page=1):
     rdata = request.get_json()
     if rdata is None:
@@ -208,6 +215,7 @@ def ussd(page=1):
     return jsonify(data)
 
 @app.route('/incoming-sms/latest', methods=['POST'])
+@require_token
 def incoming_latest():
     rdata = request.get_json()
     date = rdata.get('date', None)
@@ -215,25 +223,9 @@ def incoming_latest():
 
     return jsonify(sms)
 
-@app.route('/login', methods=['POST'])
-def login():
-    rdata = request.get_json()
-    login = rdata.get('login', None)
-    password = rdata.get('password', None)
-
-    user = User.where('login', login).first()
-
-    if user and check_password_hash(user.password, password):
-        expired_at = datetime.utcnow() + timedelta(minutes=1)
-        token = tokens.generate_token(user)
-
-        user.update(token=token, expired_at=expired_at)
-        return jsonify(user)
-
-    return jsonify({'error': 'User or password are incorrect'}), 401
-
 @app.route('/incoming-sms/', methods=['POST', 'GET'])
 @app.route('/incoming-sms/<int:page>', methods=['POST', 'GET'])
+@require_token
 def incoming_sms(page=1):
     rdata = request.get_json()
     if rdata is None:
@@ -264,6 +256,7 @@ def incoming_sms(page=1):
 
 @app.route('/channels/', methods=['POST', 'GET'])
 @app.route('/channels/<int:page>', methods=['POST', 'GET'])
+@require_token
 def channels(page=1):
     rdata = request.get_json()
     if rdata is None:
@@ -293,6 +286,7 @@ def channels(page=1):
     return jsonify(data)
 
 @app.route('/channels/all', methods=['GET'])
+@require_token
 def channels_all():
     items = Channel.order_by('created_at', 'DESC').get()
 
@@ -392,6 +386,23 @@ def lang():
             }
         }
     )
+
+@app.route('/login', methods=['POST'])
+def login():
+    rdata = request.get_json()
+    login = rdata.get('login', None)
+    password = rdata.get('password', None)
+
+    user = User.where('login', login).first()
+
+    if user and check_password_hash(user.password, password):
+        expired_at = datetime.utcnow() + timedelta(hours=8)
+        token = tokens.generate_token(user)
+
+        user.update(token=token, expired_at=expired_at)
+        return jsonify({'token': token})
+
+    return jsonify({'error': 'User or password are incorrect'}), 401
 
 if __name__ == "__main__":
     app.register_error_handler(404, page_not_found)

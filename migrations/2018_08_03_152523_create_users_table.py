@@ -11,7 +11,6 @@ class CreateUsersTable(Migration):
             table.increments('id')
             table.string('login')
             table.string('password')
-            table.string('token').nullable()
             table.timestamp('expired_at').nullable()
             table.timestamps()
 
