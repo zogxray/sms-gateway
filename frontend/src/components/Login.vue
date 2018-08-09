@@ -83,7 +83,7 @@ export default {
       let self = this
       self.loading = true
 
-      self.$root.axios.post('login', self.form)
+      self.$axios.post('login', self.form)
         .then(function (response) {
           self.items = response.data
           self.$root.auth.token = response.data.token

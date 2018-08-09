@@ -116,7 +116,7 @@ export default {
 
       self.loading = true
 
-      self.$root.axios.post('channels/' + self.page, self.filter)
+      self.$axios.post('channels/' + self.page, self.filter)
         .then(function (response) {
           self.items = response.data
           self.loading = false
@@ -139,7 +139,7 @@ export default {
         return
       }
 
-      self.$root.axios.post('ussd/add', {
+      self.$axios.post('ussd/add', {
         ussd: item.balance_ussd,
         channel_id: item.id
       })
@@ -148,7 +148,7 @@ export default {
             id: it.id,
             interval: setInterval(function () {
               self.loading = true
-              self.$root.axios.get('channel/' + it.id)
+              self.$axios.get('channel/' + it.id)
                 .then(function (response) {
                   let index = self.items.data.findIndex(e => e.id === response.data.id)
                   if (self.items.data[index].updated_at !== response.data.updated_at) {

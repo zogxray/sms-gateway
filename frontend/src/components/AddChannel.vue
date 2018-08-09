@@ -145,7 +145,7 @@ export default {
         route = 'channels/add'
       }
 
-      self.$root.axios.post(route, self.form)
+      self.$axios.post(route, self.form)
         .then(function (response) {
           self.items = response.data
           self.loading = false

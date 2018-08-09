@@ -106,7 +106,7 @@ export default {
     },
     getLang: function () {
       let self = this
-      self.$root.axios.get('lang.js')
+      self.$axios.get('lang.js')
         .then(function (response) {
           self.translations = response.data
           trans.translation = self.translations[self.locale]

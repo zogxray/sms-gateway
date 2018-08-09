@@ -90,7 +90,7 @@ export default {
 
       self.loading = true
 
-      self.$root.axios.post('ussd/' + self.page, self.filter)
+      self.$axios.post('ussd/' + self.page, self.filter)
         .then(function (response) {
           self.items = response.data
           self.loading = false

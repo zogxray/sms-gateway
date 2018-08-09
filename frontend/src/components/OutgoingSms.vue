@@ -97,7 +97,7 @@ export default {
 
       self.loading = true
 
-      self.$root.axios.post('outgoing-sms/' + self.page, self.filter)
+      self.$axios.post('outgoing-sms/' + self.page, self.filter)
         .then(function (response) {
           self.items = response.data
           self.loading = false
@@ -106,7 +106,7 @@ export default {
               clearInterval(self.interval)
             }
             self.interval = setInterval(function () {
-              self.$root.axios.post('outgoing-sms/latest', {date: self.items.data[0].created_at})
+              self.$axios.post('outgoing-sms/latest', {date: self.items.data[0].created_at})
                 .then(function (response) {
                   if (response.data !== null) {
                     self.items.data.unshift(response.data)

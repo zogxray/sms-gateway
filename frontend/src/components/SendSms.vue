@@ -93,7 +93,7 @@ export default {
     },
     getChannels: function () {
       let self = this
-      self.$root.axios.get('channels/all')
+      self.$axios.get('channels/all')
         .then(function (response) {
           self.channels = response.data
         })
@@ -105,7 +105,7 @@ export default {
     saveItem: function () {
       let self = this
       self.loading = true
-      self.$root.axios.post('outgoing-sms/add', self.form)
+      self.$axios.post('outgoing-sms/add', self.form)
         .then(function (response) {
           self.items = response.data
           self.loading = false
