@@ -54,7 +54,10 @@ const app = new Vue({
   watch: {
     auth: {
       handler: function () {
-        localStorage.setItem('token', this.auth.token)
+        if (this.auth.token !== null) {
+          localStorage.setItem('token', this.auth.token)
+        }
+
         this.$axios.defaults.headers['Authorization'] = 'Bearer ' + this.auth.token
       },
       deep: true
@@ -67,9 +70,10 @@ const app = new Vue({
 
     if (token !== null) {
       self.auth.token = token
+      self.$axios.defaults.headers['Authorization'] = 'Bearer ' + this.auth.token
     }
 
-    this.$axios.interceptors.response.use(function (response) {
+    self.$axios.interceptors.response.use(function (response) {
       return response
     }, function (error) {
       if (error.response.status === 401) {

@@ -67,7 +67,7 @@ export default {
       }
     }
   },
-  created: function () {
+  mounted: function () {
     this.getChannels()
   },
   methods: {

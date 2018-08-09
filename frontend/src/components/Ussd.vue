@@ -52,7 +52,7 @@ export default {
     loading: false,
     error: null
   }),
-  created: function () {
+  mounted: function () {
     let filter = JSON.parse(localStorage.getItem('ussd-filter'))
 
     if (filter !== null) {

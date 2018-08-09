@@ -98,7 +98,7 @@ export default {
       }
     }
   },
-  created: function () {
+  mounted: function () {
     this.id = this.$route.params.id
 
     if (this.id !== null) {

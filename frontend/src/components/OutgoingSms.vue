@@ -56,7 +56,7 @@ export default {
     error: null,
     interval: null
   }),
-  created: function () {
+  mounted: function () {
     let filter = JSON.parse(localStorage.getItem('outgoing-sms-filter'))
 
     if (filter !== null) {

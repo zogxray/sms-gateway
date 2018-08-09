@@ -70,7 +70,7 @@ export default {
     interval: null,
     error: null
   }),
-  created: function () {
+  mounted: function () {
     let filter = JSON.parse(localStorage.getItem('channels-filter'))
 
     if (filter !== null) {
