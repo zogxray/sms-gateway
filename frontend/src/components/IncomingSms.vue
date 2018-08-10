@@ -82,7 +82,7 @@ export default {
       } else {
         self.page = page
       }
-      this.$router.push({name: 'IncomingSms', params: {page: self.page}})
+      this.$router.push({name: 'IncomingSmsPage', params: {page: self.page}})
     },
     getFiltered: function (page) {
       let self = this

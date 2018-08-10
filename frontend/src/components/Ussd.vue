@@ -77,7 +77,7 @@ export default {
       } else {
         self.page = page
       }
-      this.$router.push({name: 'Ussd', params: {page: self.page}})
+      this.$router.push({name: 'UssdPage', params: {page: self.page}})
     },
     getFiltered: function (page) {
       let self = this
