@@ -67,7 +67,7 @@ export default {
       }
     }
   },
-  created: function () {
+  mounted: function () {
     this.getChannels()
   },
   methods: {
@@ -82,7 +82,7 @@ export default {
     },
     getChannels: function () {
       let self = this
-      self.$root.axios.get('channels/all')
+      self.$axios.get('channels/all')
         .then(function (response) {
           self.channels = response.data
         })
@@ -95,7 +95,7 @@ export default {
       let self = this
       self.loading = true
 
-      self.$root.axios.post('ussd/add', self.form)
+      self.$axios.post('ussd/add', self.form)
         .then(function (response) {
           self.items = response.data
           self.loading = false

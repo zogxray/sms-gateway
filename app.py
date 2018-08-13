@@ -7,8 +7,9 @@ from models.ussd import Ussd
 from models.user import User
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime, timedelta
-from security import tokens
 from functools import wraps
+import jwt
+
 
 # Configuration
 DEBUG = True
@@ -24,6 +25,40 @@ ORATOR_DATABASES = {
     }
 }
 SECRET_KEY = '4K5UA6+BMeyNPgYxhjFU03dYA1NlDGrf3wRr8uOcIHU='
+
+def generate_token(user):
+    """ Generates the access token"""
+    try:
+        payload = {
+            'exp': user.expired_at,
+            'iat': datetime.utcnow(),
+            'sub': user.id
+        }
+
+        jwt_string = jwt.encode(
+            payload,
+            SECRET_KEY,
+            algorithm='HS256'
+        )
+
+        return jwt_string
+
+    except Exception as e:
+        return str(e)
+
+
+def decode_token(token):
+    """Decodes the access token from the Authorization header."""
+    try:
+        payload = jwt.decode(token, SECRET_KEY)
+        return payload['sub']
+
+    except jwt.ExpiredSignatureError:
+        return "Expired token. Please login to get a new token"
+
+    except jwt.InvalidTokenError:
+        return "Invalid token. Please register or login"
+
 
 # Creating Flask application
 app = Flask(__name__)
@@ -55,7 +90,7 @@ def require_token(func):
 
         access_token = auth_header.split(" ")[1]
         if access_token:
-            user_id = tokens.decode_token(access_token)
+            user_id = decode_token(access_token)
             user = User.find(user_id)
             if user:
                 return func(*args, **kwargs)
@@ -407,7 +442,7 @@ def login():
 
     if user and check_password_hash(user.password, password):
         expired_at = datetime.utcnow() + timedelta(hours=8)
-        token = tokens.generate_token(user)
+        token = generate_token(user)
 
         user.update(token=token, expired_at=expired_at)
         return jsonify({'token': token})

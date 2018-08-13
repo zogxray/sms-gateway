@@ -52,7 +52,7 @@ export default {
     loading: false,
     error: null
   }),
-  created: function () {
+  mounted: function () {
     let filter = JSON.parse(localStorage.getItem('ussd-filter'))
 
     if (filter !== null) {
@@ -77,7 +77,7 @@ export default {
       } else {
         self.page = page
       }
-      this.$router.push({name: 'Ussd', params: {page: self.page}})
+      this.$router.push({name: 'UssdPage', params: {page: self.page}})
     },
     getFiltered: function (page) {
       let self = this
@@ -90,7 +90,7 @@ export default {
 
       self.loading = true
 
-      self.$root.axios.post('ussd/' + self.page, self.filter)
+      self.$axios.post('ussd/' + self.page, self.filter)
         .then(function (response) {
           self.items = response.data
           self.loading = false

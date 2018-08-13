@@ -54,7 +54,7 @@ export default {
     error: null,
     interval: null
   }),
-  created: function () {
+  mounted: function () {
     let filter = JSON.parse(localStorage.getItem('incoming-sms-filter'))
 
     if (filter !== null) {
@@ -82,7 +82,7 @@ export default {
       } else {
         self.page = page
       }
-      this.$router.push({name: 'IncomingSms', params: {page: self.page}})
+      this.$router.push({name: 'IncomingSmsPage', params: {page: self.page}})
     },
     getFiltered: function (page) {
       let self = this
@@ -95,7 +95,7 @@ export default {
 
       self.loading = true
 
-      self.$root.axios.post('incoming-sms/' + self.page, self.filter)
+      self.$axios.post('incoming-sms/' + self.page, self.filter)
         .then(function (response) {
           self.items = response.data
           self.loading = false
@@ -104,7 +104,7 @@ export default {
               clearInterval(self.interval)
             }
             self.interval = setInterval(function () {
-              self.$root.axios.post('incoming-sms/latest', {date: self.items.data[0].created_at})
+              self.$axios.post('incoming-sms/latest', {date: self.items.data[0].created_at})
                 .then(function (response) {
                   if (response.data !== null) {
                     self.items.data.unshift(response.data)
