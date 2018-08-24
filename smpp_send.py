@@ -39,5 +39,6 @@ for part in parts:
         esm_class=msg_type_flag,
         registered_delivery=True,
     )
+
     print(pdu.sequence)
 # client.listen()
