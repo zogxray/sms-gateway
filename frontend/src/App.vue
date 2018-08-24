@@ -44,7 +44,7 @@
 
           <md-list-item v-if="$root.auth.token" tag="md-list-item" v-on:click.prevent="logout()">
             <md-icon>remove</md-icon>
-            <span class="md-list-item-text">Logout</span>
+            <span class="md-list-item-text">{{ 'logout' | trans }}</span>
           </md-list-item>
         </md-list>
 

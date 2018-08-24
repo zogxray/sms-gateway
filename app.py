@@ -332,6 +332,11 @@ def lang():
     return jsonify(
         {
             'en': {
+                'form.login.required': 'Login is required',
+                'form.password.required': 'Password is required',
+                'password': 'Password',
+                'login': 'Login',
+                'logout': 'Logout',
                 'title': 'SMS-gateway',
                 'incomingSms': 'Incoming Sms',
                 'outgoingSms': 'Outgoing Sms',
@@ -376,6 +381,11 @@ def lang():
                 'check_balance': 'Check',
             },
             'ru': {
+                'form.login.required': 'Логин обязателен для заполнения',
+                'form.password.required': 'Пароль обязателен для заполнения',
+                'password': 'Пароль',
+                'login': 'Вход',
+                'logout': 'Выход',
                 'title': 'SMS-шлюз',
                 'incomingSms': 'Входящие Sms',
                 'outgoingSms': 'Исходящие Sms',

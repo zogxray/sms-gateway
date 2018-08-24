@@ -12,31 +12,31 @@
       <form v-if="!error" novalidate class="md-layout" @submit.prevent="validateItem">
       <md-card class="md-layout-item md-size-100 md-small-size-100">
         <md-card-header>
-          <div class="md-title">Login</div>
+          <div class="md-title">{{ 'login' | trans }}</div>
         </md-card-header>
 
         <md-card-content>
           <div class="md-layout md-gutter">
             <div class="md-layout-item md-small-size-100">
               <md-field :class="getValidationClass('login')">
-                <label for="login">Login</label>
+                <label for="login">{{ 'login' | trans }}</label>
                 <md-input name="login" id="login" autocomplete="given-login" v-model="form.login" :disabled="loading" />
-                <span class="md-error" v-if="!$v.form.login.required">Login is required</span>
+                <span class="md-error" v-if="!$v.form.login.required">{{ 'form.login.required' | trans }}</span>
               </md-field>
             </div>
 
             <div class="md-layout-item md-small-size-100">
               <md-field :class="getValidationClass('password')">
-                <label for="password">Password</label>
+                <label for="password">{{ 'password' | trans }}</label>
                 <md-input name="password" id="password" type="password" v-model="form.password" :disabled="loading" />
-                <span class="md-error" v-if="!$v.form.password.required">Password is required</span>
+                <span class="md-error" v-if="!$v.form.password.required">{{ 'form.password.required' | trans }}</span>
               </md-field>
             </div>
           </div>
         </md-card-content>
 
         <md-card-actions>
-          <md-button type="submit" class="md-primary" :disabled="loading">Login</md-button>
+          <md-button type="submit" class="md-primary" :disabled="loading">{{ 'login' | trans }}</md-button>
         </md-card-actions>
       </md-card>
     </form>
