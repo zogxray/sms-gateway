@@ -16,8 +16,6 @@ client = client.Client('10.100.102.3', 7777)
 # Print when obtain message_id
 client.set_message_sent_handler(
     lambda pdu: sys.stdout.write('sent {} {}\n'.format(pdu.sequence, pdu.message_id)))
-client.set_message_received_handler(
-    lambda pdu: sys.stdout.write('delivered {}\n'.format(pdu.receipted_message_id)))
 
 client.connect()
 client.bind_transceiver(system_id='smpp', password='smpp')
@@ -41,4 +39,3 @@ for part in parts:
     )
 
     print(pdu.sequence)
-# client.listen()

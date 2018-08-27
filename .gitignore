@@ -5,7 +5,7 @@ frontend/npm-debug.log*
 frontend/yarn-debug.log*
 frontend/yarn-error.log*
 frontend//test/unit/coverage/
-
+.env
 # Editor directories and files
 .idea
 .vscode

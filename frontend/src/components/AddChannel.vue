@@ -100,7 +100,6 @@ export default {
   },
   mounted: function () {
     this.id = this.$route.params.id
-
     if (this.id !== null) {
       this.getItem()
     }
@@ -117,7 +116,7 @@ export default {
     },
     getItem: function () {
       let self = this
-      self.$root.axios.get('channel/' + self.id)
+      self.$axios.get('channel/' + self.id)
         .then(function (response) {
           self.form = {
             name: response.data.name,
