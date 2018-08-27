@@ -1,5 +1,5 @@
 from . import ussd
-from app import require_token
+from security.token import require_token
 from flask import request
 from flask_orator import jsonify
 from models.ussd import Ussd

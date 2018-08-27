@@ -1,6 +1,6 @@
 from . import channel
 from flask import request
-from app import require_token
+from security.token import require_token
 from flask_orator import jsonify
 from models.channel import Channel
 

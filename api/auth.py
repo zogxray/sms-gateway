@@ -3,7 +3,7 @@ from models.user import User
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime, timedelta
 from flask_orator import jsonify
-from app import generate_token
+from security.token import generate_token
 from . import auth
 
 @auth.route('/login', methods=['POST'])

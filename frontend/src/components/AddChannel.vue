@@ -37,6 +37,26 @@
                 <md-input name="sim-pass" id="sim-pass" autocomplete="given-sim-pass" v-model="form.sim_pass" :disabled="loading" />
                 <span class="md-error" v-if="!$v.form.sim_pass.required">{{ 'form.sim_pass.required' | trans }}</span>
               </md-field>
+              <md-field :class="getValidationClass('smpp_sim_id')">
+                <label for="smpp_sim_id">{{ 'smpp_sim_id' | trans }}</label>
+                <md-input name="sim-id" id="smpp_sim_id" autocomplete="given-smpp_sim_id" v-model="form.smpp_sim_id" :disabled="loading" />
+                <span class="md-error" v-if="!$v.form.smpp_sim_id.required">{{ 'form.smpp_sim_id.required' | trans }}</span>
+              </md-field>
+              <md-field :class="getValidationClass('smpp_sim_pass')">
+                <label for="smpp_sim_pass">{{ 'smpp_sim_pass' | trans }}</label>
+                <md-input name="smpp_sim_pass" id="smpp_sim_pass" autocomplete="given-smpp_sim_pass" v-model="form.smpp_sim_pass" :disabled="loading" />
+                <span class="md-error" v-if="!$v.form.smpp_sim_pass.required">{{ 'form.smpp_sim_pass.required' | trans }}</span>
+              </md-field>
+              <md-field :class="getValidationClass('smpp_sim_address')">
+                <label for="smpp_sim_address">{{ 'smpp_sim_address' | trans }}</label>
+                <md-input name="sim-id" id="smpp_sim_address" autocomplete="given-smpp_sim_address" v-model="form.smpp_sim_address" :disabled="loading" />
+                <span class="md-error" v-if="!$v.form.smpp_sim_address.required">{{ 'form.smpp_sim_address.required' | trans }}</span>
+              </md-field>
+              <md-field :class="getValidationClass('smpp_sim_port')">
+                <label for="smpp_sim_port">{{ 'smpp_sim_port' | trans }}</label>
+                <md-input name="smpp_sim_port" id="smpp_sim_port" autocomplete="given-smpp_sim_port" v-model="form.smpp_sim_port" :disabled="loading" />
+                <span class="md-error" v-if="!$v.form.smpp_sim_port.required">{{ 'form.smpp_sim_port.required' | trans }}</span>
+              </md-field>
               <md-field :class="getValidationClass('phone')">
                 <label for="sim-phone">{{ 'phone' | trans }}</label>
                 <md-input name="sim-phone" id="sim-phone" autocomplete="given-sim-phone" v-model="form.phone" :disabled="loading" />
@@ -46,6 +66,13 @@
                 <label for="sim-balance">{{ 'ussd_balance' | trans }}</label>
                 <md-input name="sim-balance" id="sim-balance" autocomplete="given-sim-balance" v-model="form.balance_ussd" :disabled="loading" />
                 <span class="md-error" v-if="!$v.form.balance_ussd.required">{{ 'form.balance_ussd.required' | trans }}</span>
+              </md-field>
+              <md-field :class="getValidationClass('protocol')">
+                <label for="protocol">{{'protocol' | trans}}</label>
+                <md-select name="protocol" id="protocol" v-model="form.protocol" md-dense :disabled="loading">
+                  <md-option v-for="protocol in protocols" v-bind:key="protocol.id" v-bind:value="protocol.id">{{protocol.name}}</md-option>
+                </md-select>
+                <span class="md-error" v-if="!$v.form.protocol.required">{{'form.protocol.required' | trans}}</span>
               </md-field>
             </div>
           </div>
@@ -72,9 +99,18 @@ export default {
       name: null,
       sim_id: null,
       sim_pass: null,
+      smpp_sim_id: null,
+      smpp_sim_pass: null,
+      smpp_sim_address: null,
+      smpp_sim_port: null,
       phone: null,
-      balance_ussd: null
+      balance_ussd: null,
+      protocol: null,
     },
+    protocols: [
+      {'id': 'goip', name: 'GOIP'},
+      {'id': 'smpp', name: 'SMPP'}
+    ],
     id: null,
     loading: false,
     error: null
@@ -90,10 +126,25 @@ export default {
       sim_pass: {
         required
       },
+      smpp_sim_id: {
+        required
+      },
+      smpp_sim_pass: {
+        required
+      },
+      smpp_sim_address: {
+        required
+      },
+      smpp_sim_port: {
+        required
+      },
       phone: {
         required
       },
       balance_ussd: {
+        required
+      },
+      protocol: {
         required
       }
     }
@@ -122,6 +173,11 @@ export default {
             name: response.data.name,
             sim_id: response.data.sim_id,
             sim_pass: response.data.sim_pass,
+            smpp_sim_id: response.data.smpp_sim_id,
+            smpp_sim_pass: response.data.smpp_sim_pass,
+            smpp_sim_address: response.data.smpp_sim_address,
+            smpp_sim_port: response.data.smpp_sim_port,
+            protocol: response.data.protocol,
             phone: response.data.phone,
             balance_ussd: response.data.balance_ussd
           }
