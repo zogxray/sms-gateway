@@ -12,16 +12,28 @@ import os
 # Configuration
 DEBUG = True
 ORATOR_DATABASES = {
-    'default': os.getenv('DEFAULT_CONNECTION'),
+    'default': 'collector',
     'collector': {
-        'driver': os.getenv('DEFAULT_CONNECTION_DRIVER'),
-        'host': os.getenv('DEFAULT_CONNECTION_HOST'),
-        'database': os.getenv('DEFAULT_CONNECTION_DATABASE'),
-        'user': os.getenv('DEFAULT_CONNECTION_USER'),
-        'password': os.getenv('DEFAULT_CONNECTION_PASSWORD'),
-        'prefix': os.getenv('DEFAULT_CONNECTION_PREFIX')
+        'driver': 'mysql',
+        'host': 'localhost',
+        'database': 'collector',
+        'user': 'root',
+        'password': 'root',
+        'prefix': ''
     }
 }
+
+# ORATOR_DATABASES = {
+#     'default': os.getenv('DEFAULT_CONNECTION'),
+#     'collector': {
+#         'driver': os.getenv('DEFAULT_CONNECTION_DRIVER'),
+#         'host': os.getenv('DEFAULT_CONNECTION_HOST'),
+#         'database': os.getenv('DEFAULT_CONNECTION_DATABASE'),
+#         'user': os.getenv('DEFAULT_CONNECTION_USER'),
+#         'password': os.getenv('DEFAULT_CONNECTION_PASSWORD'),
+#         'prefix': os.getenv('DEFAULT_CONNECTION_PREFIX')
+#     }
+# }
 
 SECRET_KEY = os.getenv('SECRET_KEY')
 
