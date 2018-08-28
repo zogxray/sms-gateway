@@ -1,6 +1,7 @@
 from orator.seeds import Seeder
 from orator.orm import Factory
 from models.sms import Sms
+from models.channel import Channel
 import random
 
 factory = Factory()
@@ -10,7 +11,7 @@ def sms_factory(faker):
     return {
         'phone': faker.phone_number(),
         'text': faker.text(),
-        'channel_id': 1,
+        'channel_id': Channel.first().id,
         'direction': False
 
     }

@@ -18,6 +18,7 @@ class ChannelTableSeeder(Seeder):
             'smpp_sim_pass': 'pass',
             'smpp_sim_address': '192.168.1.2',
             'smpp_sim_port': 7777,
+            'protocol': 'smpp',
             'balance_ussd': '*101#'
         })
 
@@ -31,6 +32,7 @@ class ChannelTableSeeder(Seeder):
             'smpp_sim_pass': 'pass',
             'smpp_sim_address': '192.168.1.2',
             'smpp_sim_port': 7777,
+            'protocol': 'smpp',
             'balance_ussd': '*101#'
         })
 

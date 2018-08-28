@@ -30,7 +30,7 @@ def generate_token(user):
 def decode_token(token):
     """Decodes the access token from the Authorization header."""
     try:
-        payload = jwt.decode(token, os.getenv('SECRET_KEY'))
+        payload = jwt.decode(str(token), os.getenv('SECRET_KEY'))
         return payload['sub']
 
     except jwt.ExpiredSignatureError:

@@ -24,4 +24,12 @@ npm run unit
 npm test
 ```
 
+## Docker Setup
+``` bash
+docker build -t zogxray/sms-gateway-front .
+docker run -it -p 80:80 --rm --name sms-gateway-front -d zogxray/sms-gateway-front
+```
+
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+
+

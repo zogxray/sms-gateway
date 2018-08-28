@@ -46,6 +46,12 @@ $ python ussd.py
 $ cd frontend && npm install && npm run dev
 ```
 
+## Docker 
+```console
+docker build -t zogxray/sms-gateway-back .
+docker run -it -p 5000:5000 --rm --name sms-gateway-back -d zogxray/sms-gateway-back
+```
+
 ## Setup on goip device
 
 Setup SMS-gateway address, port, SMS Client ID and Password on Goip device in Configurations->SMS. Add rows in SMS-gateway channels to listen that.
