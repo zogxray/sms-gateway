@@ -41,17 +41,17 @@ Run USSD send process
 $ python ussd.py
 ```
 
-#### Front
-```console
-$ cd frontend && npm install && npm run dev
-docker exec -it back python db.py migrate --seed --force
-```
-
-## Docker 
+#### Docker install
 ```console
 docker-compose up
-
+docker exec -it id python db.py migrate --seed --force
 ```
+#### Docker run
+```console
+docker exec -it id python smpp_send.py
+docker exec -it id python smpp_recieve.py
+```
+
 
 ## Setup on goip device
 
