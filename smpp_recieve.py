@@ -8,12 +8,12 @@ import sys
 from app import db
 
 def store_sms(pdu, channel):
-    message = str(pdu.short_message.decode("utf-16-be"))
+    short_message = str(pdu.short_message.decode("utf-16-be"))
     source_addres = str(pdu.source_addr.decode("utf-8"))
-    print('store message  from '.join(source_addres).join(' ').join(source_addres))
+    print('store message from '.join(source_addres).join(' ').join(short_message))
     sms = Sms()
     sms.phone = source_addres
-    sms.text = message
+    sms.text = short_message
     sms.sim_msg_count = 0
     sms.channel_id = channel.id
     sms.save()
@@ -45,7 +45,6 @@ def background(channel):
     while True:
         client.read_once()
 
-print(channels)
 
 for channel in channels:
     thread = threading.Thread(name=channel.id, target=background, args=([channel]))
