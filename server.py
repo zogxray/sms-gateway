@@ -39,7 +39,7 @@ while True:
         sock.sendto(message, client_address)
 
     if 'RECEIVE' in request_data:
-        channel = Channel.where('sim_id', request_data['id']).where('sim_pass', request_data['password']).first()
+        channel = Channel.where('protocol', 'goip').where('sim_id', request_data['id']).where('sim_pass', request_data['password']).first()
 
         message = 'RECEIVE message ' +request_data['RECEIVE']+ ' from ' +request_data['id'] + '\n'
         print(message)

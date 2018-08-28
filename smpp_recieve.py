@@ -1,40 +1,53 @@
 import logging
 from smpplib.client import Client
 from models.channel import Channel
+from models.sms import Sms
+
 import threading
 import sys
 from app import db
 
 def store_sms(pdu, channel):
-    print("*******************")
-    print(channel.id)
-    print(channel.name)
-    print("*******************")
-    print(str(pdu.source_addr))
-    print(str(pdu.destination_addr))
-    print(str(pdu.short_message.decode("utf-16-be")))
+    message = str(pdu.short_message.decode("utf-16-be"))
+    source_addres = str(pdu.source_addr.decode("utf-8"))
+    print('store message  from '.join(source_addres).join(' ').join(source_addres))
+    sms = Sms()
+    sms.phone = source_addres
+    sms.text = message
+    sms.sim_msg_count = 0
+    sms.channel_id = channel.id
+    sms.save()
 
 # if you want to know what's happening
 logging.basicConfig(level='DEBUG')
 
 channels = Channel.where('protocol', 'smpp').get()
 
-for channel in channels:
+
+clients = {}
+
+
+def background(channel):
     print(channel.name)
-    try:
+    if channel.id not in clients:
         client = Client(channel.smpp_sim_address, channel.smpp_sim_port)
         client.set_message_received_handler(
-                lambda pdu: store_sms(pdu, channel)
+            lambda pdu: store_sms(pdu, channel)
         )
 
-        client.connect()
-        client.bind_receiver(system_id=channel.smpp_sim_id, password=channel.smpp_sim_pass)
+        clients[channel.id] = client
+    else:
+        client = clients[channel.id]
 
-        # thread = threading.Thread(target=client.listen())
-        # thread.setDaemon(True)
-        # thread.start()
-    except Exception as e:
-        print(e)
-        print("Connection error")
-        sys.exit()
+    client.connect()
+    client.bind_receiver(system_id=channel.smpp_sim_id, password=channel.smpp_sim_pass)
 
+    while True:
+        client.read_once()
+
+print(channels)
+
+for channel in channels:
+    thread = threading.Thread(name=channel.id, target=background, args=([channel]))
+    # thread.setDaemon(True)
+    thread.start()

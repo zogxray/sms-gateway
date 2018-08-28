@@ -276,6 +276,7 @@ class Client(object):
 
     def read_once(self, ignore_error_codes=None):
         """Read a PDU and act"""
+        print('read')
         try:
             try:
                 p = self.read_pdu()
