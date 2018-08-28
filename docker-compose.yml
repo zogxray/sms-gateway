@@ -1,0 +1,47 @@
+version: "3"
+services:
+  postgres:
+    image: postgres
+    environment:
+      - POSTGRES_USER=sms
+      - POSTGRES_PASSWORD=sms
+      - POSTGRES_DB=sms
+      - PGDATA=/data/sms
+    ports:
+      - "5432:5432"
+    networks:
+      - bridge
+    restart: unless-stopped
+
+  front:
+    build: ./frontend
+    ports:
+      - "80:80"
+    networks:
+      - bridge
+    environment:
+      - NODE_ENV=production
+      - ROOT_API=http://127.0.0.1:5000
+
+  back:
+    build: .
+    ports:
+      - "5000:5000"
+    networks:
+      - bridge
+    environment:
+      - DEFAULT_CONNECTION=sms
+      - DEFAULT_CONNECTION_DRIVER=pgsql
+      - DEFAULT_CONNECTION_HOST=postgres
+      - DEFAULT_CONNECTION_DATABASE=sms
+      - DEFAULT_CONNECTION_USER=sms
+      - DEFAULT_CONNECTION_PASSWORD=sms
+    depends_on:
+      - postgres
+    links:
+      - postgres
+      - front
+
+networks:
+  bridge:
+    driver: bridge

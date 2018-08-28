@@ -34,10 +34,18 @@ def decode_token(token):
         return payload['sub']
 
     except jwt.ExpiredSignatureError:
-        return "Expired token. Please login to get a new token"
+        response = {
+            'message': "Expired token. Please login to get a new token"
+        }
+
+        return jsonify(response), 401
 
     except jwt.InvalidTokenError:
-        return "Invalid token. Please register or login"
+        response = {
+            'message': "Invalid token. Please register or login"
+        }
+
+        return jsonify(response), 401
 
 def require_token(func):
     @wraps(func)

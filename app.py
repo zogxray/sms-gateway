@@ -19,7 +19,7 @@ DEBUG = True
 
 ORATOR_DATABASES = {
     'default': os.getenv('DEFAULT_CONNECTION'),
-    'collector': {
+    'sms': {
         'driver': os.getenv('DEFAULT_CONNECTION_DRIVER'),
         'host': os.getenv('DEFAULT_CONNECTION_HOST'),
         'database': os.getenv('DEFAULT_CONNECTION_DATABASE'),

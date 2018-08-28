@@ -44,12 +44,13 @@ $ python ussd.py
 #### Front
 ```console
 $ cd frontend && npm install && npm run dev
+docker exec -it back python db.py migrate --seed --force
 ```
 
 ## Docker 
 ```console
-docker build -t zogxray/sms-gateway-back .
-docker run -it -p 5000:5000 --rm --name sms-gateway-back -d zogxray/sms-gateway-back
+docker-compose up
+
 ```
 
 ## Setup on goip device
