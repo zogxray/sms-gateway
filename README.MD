@@ -44,12 +44,12 @@ $ python ussd.py
 #### Docker install
 ```console
 docker-compose up
-docker exec -it id python db.py migrate --seed --force
+docker exec -it 1906401b2014fa389c1ba3eeba3be6493425004928b25216c6a7b655b9dd91e2 python db.py migrate --seed --force
 ```
 #### Docker run
 ```console
-docker exec -it id python smpp_send.py
-docker exec -it id python smpp_recieve.py
+docker exec -it 1906401b2014fa389c1ba3eeba3be6493425004928b25216c6a7b655b9dd91e2 python smpp_send.py
+docker exec -it 1906401b2014fa389c1ba3eeba3be6493425004928b25216c6a7b655b9dd91e2 python smpp_recieve.py
 ```
 
 

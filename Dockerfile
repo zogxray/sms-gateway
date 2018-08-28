@@ -14,7 +14,6 @@ WORKDIR /app
 COPY requirements.txt ./
 RUN pip install -r requirements.txt
 COPY . ./
-RUN python db.py migrate --seed --no-interaction
 # Run app.py when the container launches
 COPY app.py .
 CMD python app.py
