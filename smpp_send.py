@@ -59,10 +59,7 @@ def background(channel):
                 )
 
                 client.disconnect()
-        short_message = str(pdu.short_message.decode("utf-16-be"))
-        source_addres = str(pdu.source_addr.decode("utf-8"))
-        print('store message from '.join(source_addres).join(' ').join(short_message))
-        sms.update(received_at=datetime.datetime.now())
+
         time.sleep(5)
 
 
