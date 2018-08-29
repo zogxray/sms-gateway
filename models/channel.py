@@ -19,7 +19,7 @@ class Channel(Model):
         'protocol'
         'balance_ussd'
     ]
-    __dates__ = ['created_at', 'updated_at', 'last_live_at']
+    __dates__ = ['last_live_at']
 
     @has_many('channal_id', 'id')
     def sms(self):

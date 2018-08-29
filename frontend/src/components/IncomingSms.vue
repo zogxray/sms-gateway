@@ -106,16 +106,15 @@ export default {
               clearInterval(self.interval)
             }
 
-            let audio = document.getElementById('tick')
-
             self.interval = setInterval(function () {
+
               self.$axios.post('incoming-sms/latest', {date: self.items.data[0].created_at})
                 .then(function (response) {
                   if (response.data.data.length) {
                     for (let item in response.data.data) {
                       self.items.data.unshift(item)
                       self.items.data.pop()
-                      audio.play()
+                      document.getElementById('tick').play()
                     }
                   }
                 })

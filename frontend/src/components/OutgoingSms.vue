@@ -101,13 +101,13 @@ export default {
         .then(function (response) {
           self.items = response.data
           self.loading = false
+
           if (self.page === 1 && self.filter.text === '') {
             console.log(self.filter.text)
+
             if (self.interval !== null) {
               clearInterval(self.interval)
             }
-
-            let audio = document.getElementById('tick')
 
             self.interval = setInterval(function () {
               self.$axios.post('outgoing-sms/latest', {date: self.items.data[0].created_at})
@@ -116,7 +116,7 @@ export default {
                     for (let item in response.data.data) {
                       self.items.data.unshift(item)
                       self.items.data.pop()
-                      audio.play()
+                      document.getElementById('tick').play()
                     }
                   }
                 })
