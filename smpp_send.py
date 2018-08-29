@@ -40,6 +40,7 @@ def background(channel):
 
             client.connect()
             client.bind_transceiver(system_id=channel.smpp_sim_id, password=channel.smpp_sim_pass)
+
             for part in parts:
                 pdu = client.send_message(
                     source_addr_ton=consts.SMPP_TON_INTL,
@@ -58,8 +59,8 @@ def background(channel):
                     registered_delivery=True,
                 )
 
-                client.disconnect()
-
+            sms.update(received_at=datetime.datetime.now())
+            client.disconnect()
         time.sleep(5)
 
 

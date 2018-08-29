@@ -16,8 +16,8 @@ class ChannelTableSeeder(Seeder):
             'balance': 100.30,
             'smpp_sim_id': 'smppclient1',
             'smpp_sim_pass': 'password',
-            'smpp_sim_address': '192.168.88.252',
-            'smpp_sim_port': 9999,
+            'smpp_sim_address': '10.5.0.103',
+            'smpp_sim_port': 2775,
             'protocol': 'smpp',
             'balance_ussd': '*101#'
         })
@@ -30,8 +30,8 @@ class ChannelTableSeeder(Seeder):
             'balance': 100.30,
             'smpp_sim_id': 'smppclient2',
             'smpp_sim_pass': 'password',
-            'smpp_sim_address': '192.168.88.252',
-            'smpp_sim_port': 9999,
+            'smpp_sim_address': '10.5.0.103',
+            'smpp_sim_port': 2775,
             'protocol': 'smpp',
             'balance_ussd': '*101#'
         })

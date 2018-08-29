@@ -16,4 +16,6 @@ RUN pip install -r requirements.txt
 COPY . ./
 # Run app.py when the container launches
 COPY app.py .
+#CMD python smpp_recieve.py
+#CMD python smpp_send.py
 CMD python app.py

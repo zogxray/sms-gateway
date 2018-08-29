@@ -41,15 +41,21 @@ Run USSD send process
 $ python ussd.py
 ```
 
+#### Docker create network
+```console
+docker network create --gateway 10.5.0.1 --subnet 10.5.0.0/24 sms
+```
+
 #### Docker install
 ```console
 docker-compose up
-docker exec -it 1906401b2014fa389c1ba3eeba3be6493425004928b25216c6a7b655b9dd91e2 python db.py migrate --seed --force
+docker exec -it /back python db.py migrate --seed --force
 ```
+
 #### Docker run
 ```console
-docker exec -it 1906401b2014fa389c1ba3eeba3be6493425004928b25216c6a7b655b9dd91e2 python smpp_send.py
-docker exec -it 1906401b2014fa389c1ba3eeba3be6493425004928b25216c6a7b655b9dd91e2 python smpp_recieve.py
+docker exec -it /back python smpp_send.py
+docker exec -it /back python smpp_recieve.py
 ```
 
 

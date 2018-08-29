@@ -28,9 +28,11 @@ def outgoing_sms_add():
 def outgoing_latest():
     rdata = request.get_json()
     date = rdata.get('date', None)
-    sms = Sms.with_('channel').where('created_at', '>', date).where('direction', True).order_by('created_at', 'ASC').first()
-
-    return jsonify(sms)
+    items = Sms.with_('channel').where('created_at', '>', date).where('direction', True).order_by('created_at', 'ASC').get()
+    data = {
+        'data': items.serialize(),
+    }
+    return jsonify(data)
 
 @sms.route('/outgoing-sms/', methods=['POST', 'GET'])
 @sms.route('/outgoing-sms/<int:page>', methods=['POST', 'GET'])
@@ -68,9 +70,11 @@ def outgoing_sms(page=1):
 def incoming_latest():
     rdata = request.get_json()
     date = rdata.get('date', None)
-    sms = Sms.with_('channel').where('created_at', '>', date).where('direction', False).order_by('created_at', 'ASC').first()
-
-    return jsonify(sms)
+    items = Sms.with_('channel').where('created_at', '>', date).where('direction', False).order_by('created_at', 'ASC').get()
+    data = {
+        'data': items.serialize(),
+    }
+    return jsonify(data)
 
 @sms.route('/incoming-sms/', methods=['POST', 'GET'])
 @sms.route('/incoming-sms/<int:page>', methods=['POST', 'GET'])

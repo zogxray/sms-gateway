@@ -53,11 +53,11 @@ def require_token(func):
         access_token = auth_header.split(" ")[1]
         if access_token:
             user_id = decode_token(access_token)
-            if user_id:
+            if not user_id:
+                return jsonify(response), 401
+            else:
                 user = User.find(user_id)
                 if user:
                     return func(*args, **kwargs)
-
-                return jsonify(response), 401
 
     return wrapper

@@ -101,19 +101,23 @@ export default {
         .then(function (response) {
           self.items = response.data
           self.loading = false
-          if (self.page === 1) {
+          if (self.page === 1 && self.filter.text === '') {
+            console.log(self.filter.text)
             if (self.interval !== null) {
               clearInterval(self.interval)
             }
+
+            let audio = document.getElementById('tick')
+
             self.interval = setInterval(function () {
               self.$axios.post('outgoing-sms/latest', {date: self.items.data[0].created_at})
                 .then(function (response) {
-                  if (response.data !== null) {
-                    self.items.data.unshift(response.data)
-                    self.items.data.pop()
-
-                    let audio = document.getElementById('tick')
-                    audio.play()
+                  if (response.data.data.length) {
+                    for (let item in response.data.data) {
+                      self.items.data.unshift(item)
+                      self.items.data.pop()
+                      audio.play()
+                    }
                   }
                 })
                 .catch(function (error) {
