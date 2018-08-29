@@ -108,10 +108,11 @@ export default {
 
             self.interval = setInterval(function () {
 
-              self.$axios.post('incoming-sms/latest', {date: self.items.data[0].created_at})
+              let latest = self.items.data[0]
+              self.$axios.post('incoming-sms/latest', {date: latest.created_at})
                 .then(function (response) {
-                  if (response.data.data.length) {
-                    for (let item in response.data.data) {
+                  if (response.data.length) {
+                    for (let item in response.data) {
                       self.items.data.unshift(item)
                       self.items.data.pop()
                       document.getElementById('tick').play()
