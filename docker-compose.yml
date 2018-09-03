@@ -45,6 +45,7 @@ services:
       - DEFAULT_CONNECTION_DATABASE=sms
       - DEFAULT_CONNECTION_USER=sms
       - DEFAULT_CONNECTION_PASSWORD=sms
+      - SENTRY_KEY=https://3cba9e5b01ef4ea192fc3f6a0121121b:cf052be72b4c4df0ba09e31d54d34b55@sentry.io/1273740
     depends_on:
       - postgres
     links:
