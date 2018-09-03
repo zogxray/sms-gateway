@@ -41,16 +41,23 @@ Run USSD send process
 $ python ussd.py
 ```
 
-#### Front
+#### Docker create network
 ```console
-$ cd frontend && npm install && npm run dev
+docker network create --gateway 10.5.0.1 --subnet 10.5.0.0/24 sms
 ```
 
-## Docker 
+#### Docker install
 ```console
-docker build -t zogxray/sms-gateway-back .
-docker run -it -p 5000:5000 --rm --name sms-gateway-back -d zogxray/sms-gateway-back
+docker-compose up
+docker exec -it /back python db.py migrate --seed --force
 ```
+
+#### Docker run
+```console
+docker exec -it /back python smpp_send.py
+docker exec -it /back python smpp_recieve.py
+```
+
 
 ## Setup on goip device
 

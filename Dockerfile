@@ -1,20 +1,21 @@
-FROM tiangolo/uwsgi-nginx-flask:python3.6
+# Use an official Python runtime as an image
+FROM python:3.6
 LABEL maintainer "Pavlov Viktor <zogxray@gmail.com>"
-COPY requirements.txt ./
-WORKDIR /app
-RUN pip install -r ./requirements.txt --no-cache-dir
-COPY . .
-ENV FLASK_APP=app.py
-CMD python db.py migrate --no-interaction && python db.py db:seed --no-interaction && flask run -h 0.0.0.0 -p 5000
+# The EXPOSE instruction indicates the ports on which a container # # will listen for connections
+# Since Flask apps listen to port 5000  by default, we expose it
+EXPOSE 5000
 
-FROM debian:latest
-LABEL maintainer "Pavlov Viktor <zogxray@gmail.com>"
-RUN apt-get update -y
-RUN apt-get install -y python-pip python-dev build-essential
-COPY . /app
+# Sets the working directory for following COPY and CMD instructions
+# Notice we haven’t created a directory by this name - this
+# instruction creates a directory with this name if it doesn’t exist
 WORKDIR /app
+
+# Install any needed packages specified in requirements.txt
+COPY requirements.txt ./
 RUN pip install -r requirements.txt
-RUN python db.py migrate --no-interaction
-RUN python db.py db:seed --no-interaction
-ENTRYPOINT ["python"]
-CMD ["app.py"]
+COPY . ./
+# Run app.py when the container launches
+COPY app.py .
+#CMD python smpp_recieve.py
+#CMD python smpp_send.py
+CMD python app.py

@@ -1,0 +1,73 @@
+version: "3"
+services:
+  frontend:
+    build: ./frontend
+    image: zogxray/pavlov-sms-gateway-fronend
+    container_name: frontend
+    ports:
+    - "80:80"
+    networks:
+      sms:
+        ipv4_address: 10.5.0.100
+    environment:
+    - NODE_ENV=production
+    - ROOT_API=http://10.5.0.102:5000
+
+
+  postgres:
+    image: postgres
+    container_name: postgres
+    environment:
+      - POSTGRES_USER=sms
+      - POSTGRES_PASSWORD=sms
+      - POSTGRES_DB=sms
+      - PGDATA=/data/sms
+    ports:
+      - "5432:5432"
+    networks:
+      sms:
+        ipv4_address: 10.5.0.101
+    restart: unless-stopped
+
+  back:
+    build: .
+    image: zogxray/pavlov-sms-gateway-backend
+    container_name: back
+    ports:
+      - "5000:5000"
+    networks:
+      sms:
+        ipv4_address: 10.5.0.102
+    environment:
+      - DEFAULT_CONNECTION=sms
+      - DEFAULT_CONNECTION_DRIVER=pgsql
+      - DEFAULT_CONNECTION_HOST=postgres
+      - DEFAULT_CONNECTION_DATABASE=sms
+      - DEFAULT_CONNECTION_USER=sms
+      - DEFAULT_CONNECTION_PASSWORD=sms
+    depends_on:
+      - postgres
+    links:
+      - postgres
+      - frontend
+
+  scms:
+    build: ./smsc
+    image: zogxray/scms-test-server
+    container_name: smsc
+    ports:
+      - "2775:2775"
+      - "8888:8888"
+      - "3000:3000"
+    networks:
+      sms:
+        ipv4_address: 10.5.0.103
+    links:
+      - postgres
+      - frontend
+      - back
+
+networks:
+  sms:
+    external: true
+#must run docker network create --gateway 10.5.0.1 --subnet 10.5.0.0/24 sms

@@ -8,7 +8,8 @@ import sys
 from app import db
 
 def store_sms(pdu, channel):
-    short_message = str(pdu.short_message.decode("utf-16-be"))
+    # short_message = str(pdu.short_message.decode("utf-16-be"))
+    short_message = str(pdu.short_message.decode("iso-8859-1"))
     source_addres = str(pdu.source_addr.decode("utf-8"))
     print('store message from '.join(source_addres).join(' ').join(short_message))
     sms = Sms()

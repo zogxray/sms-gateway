@@ -34,10 +34,10 @@ def decode_token(token):
         return payload['sub']
 
     except jwt.ExpiredSignatureError:
-        return "Expired token. Please login to get a new token"
+        return False
 
     except jwt.InvalidTokenError:
-        return "Invalid token. Please register or login"
+        return False
 
 def require_token(func):
     @wraps(func)
@@ -53,10 +53,11 @@ def require_token(func):
         access_token = auth_header.split(" ")[1]
         if access_token:
             user_id = decode_token(access_token)
-            user = User.find(user_id)
-            if user:
-                return func(*args, **kwargs)
-
-            return jsonify(response), 401
+            if not user_id:
+                return jsonify(response), 401
+            else:
+                user = User.find(user_id)
+                if user:
+                    return func(*args, **kwargs)
 
     return wrapper
