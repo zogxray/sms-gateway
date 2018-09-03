@@ -1,0 +1,8 @@
+[program:server]
+directory=/home/sms/sms-goip-gateway
+command=/home/sms/sms-goip-gateway/.venv/bin/python server.py
+environment=PATH="/home/sms/sms-goip-gateway/.venv/bin:%(ENV_PATH)s"
+autostart=true
+autorestart=false
+stderr_logfile=/var/log/sms/server_err.log
+stdout_logfile=/var/log/sms/back.log

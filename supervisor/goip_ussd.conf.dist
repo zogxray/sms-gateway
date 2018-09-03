@@ -1,0 +1,8 @@
+[program:ussd]
+directory=/home/sms/sms-goip-gateway
+command=/home/sms/sms-goip-gateway/.venv/bin/python ussd.py
+environment=PATH="/home/sms/sms-goip-gateway/.venv/bin:%(ENV_PATH)s"
+autostart=true
+autorestart=false
+stderr_logfile=/var/log/sms/ussd_err.log
+stdout_logfile=/var/log/sms/ussd.log
