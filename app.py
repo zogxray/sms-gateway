@@ -9,10 +9,13 @@ from api import ussd
 
 from os.path import join, dirname
 from dotenv import load_dotenv
+from raven import Client
 
 dotenv_path = join(dirname(__file__), '.env')
 load_dotenv(dotenv_path)
 import os
+
+client = Client(os.getenv('SENTRY_KEY'))
 
 # Configuration
 DEBUG = True
@@ -47,16 +50,25 @@ app.register_blueprint(ussd)
 # Initializing Orator
 db = Orator(app)
 
+@app.errorhandler(Exception)
+def all_exception_handler(error):
+    client.captureException()
+    return jsonify({500: 'Oops. Something went wrong'}), 500
+
 @app.errorhandler(404)
 def page_not_found(e):
     # note that we set the 404 status explicitly
-    return jsonify({404: 'Page not found'})
-@app.errorhandler(500)
-def server_error(e):
+    client.captureException()
+    return jsonify({404: 'Page not found'}), 404
+
+@app.errorhandler(404)
+def page_not_authorize(e):
     # note that we set the 404 status explicitly
-    return jsonify({500: 'Oops. Something went wrong'})
+    client.captureException()
+    return jsonify({401: 'Not authorize'}), 401
 
 if __name__ == "__main__":
+    app.register_error_handler(Exception, all_exception_handler)
     app.register_error_handler(404, page_not_found)
-    app.register_error_handler(500, server_error)
+    app.register_error_handler(401, page_not_authorize)
     app.run(host="0.0.0.0", port=5000, threaded=True)
