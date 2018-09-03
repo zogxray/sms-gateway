@@ -4,6 +4,8 @@ services:
     build: ./frontend
     image: zogxray/pavlov-sms-gateway-fronend
     container_name: frontend
+    volumes:
+      - ./frontend:/app
     ports:
     - "80:80"
     networks:
@@ -22,6 +24,8 @@ services:
       - POSTGRES_PASSWORD=sms
       - POSTGRES_DB=sms
       - PGDATA=/data/sms
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
     networks:
@@ -33,6 +37,8 @@ services:
     build: .
     image: zogxray/pavlov-sms-gateway-backend
     container_name: back
+    volumes:
+      - ./:/app
     ports:
       - "5000:5000"
     networks:
